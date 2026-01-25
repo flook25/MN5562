@@ -17,8 +17,8 @@ d = L1;
 offset_deg = 0.81;
 offset = deg2rad(offset_deg);
 
-% --- 2. Define K Constants (For Inverse Analysis: Link 4 is Input) ---
-% Swapping 'a' and 'c' because we find Theta 2 from Theta 4
+% --- 2. Define K Constants (Inverse Analysis: Link 4 is Input) ---
+% Swapping 'a' and 'c' roles 
 K1 = d/c; 
 K2 = d/a;
 K3 = (c^2 - b^2 + a^2 + d^2)/(2*c*a); 
@@ -27,15 +27,14 @@ K3 = (c^2 - b^2 + a^2 + d^2)/(2*c*a);
 % CASE 1: Open Circuit (Input Theta 4 = -17.944)
 % ==========================================
 q4d_open = -17.944; 
-q4_1 = deg2rad(q4d_open) - offset; % Local Theta 4
+q4_1 = deg2rad(q4d_open) - offset; 
 
-% --- Calculate Coefficients for Theta 2 (Crank) ---
+% --- Theta 2 Coefficients ---
 A1 = cos(q4_1) - K1 - K2*cos(q4_1) + K3;
 B1 = -2*sin(q4_1);
 C1 = K1 - (K2+1)*cos(q4_1) + K3;
 
-% --- Calculate Coefficients for Theta 3 (Coupler) ---
-% Geometric coefficients pattern
+% --- Theta 3 Coefficients ---
 P1 = -2*b*(d + c*cos(q4_1));
 Q1 = -2*b*c*sin(q4_1);
 R1 = d^2 + c^2 + b^2 - a^2 + 2*d*c*cos(q4_1);
@@ -44,16 +43,10 @@ D1 = R1 - P1;
 E1 = 2*Q1;
 F1 = R1 + P1;
 
-% --- Solve for Theta 2 & 3 (Case 1) ---
-q2_sol1_A = 2*atan((-B1 + sqrt(B1^2 - 4*A1*C1))/(2*A1)); 
-q2_sol1_B = 2*atan((-B1 - sqrt(B1^2 - 4*A1*C1))/(2*A1)); 
-
-q3_sol1_A = 2*atan((-E1 + sqrt(E1^2 - 4*D1*F1))/(2*D1)); 
-q3_sol1_B = 2*atan((-E1 - sqrt(E1^2 - 4*D1*F1))/(2*D1));
-
-% Select Pair for Open Circuit Plotting (Usually Pair A for this config)
-q2_open = q2_sol1_A;
-q3_open = q3_sol1_A;
+% --- Solve Theta 2 & 3 (Case 1) ---
+% Using Solution 2 (Minus root) to force Link 2 DOWN
+q2_open = 2*atan((-B1 - sqrt(B1^2 - 4*A1*C1))/(2*A1)); 
+q3_open = 2*atan((-E1 - sqrt(E1^2 - 4*D1*F1))/(2*D1)); 
 
 q2_open_d = rad2deg(q2_open) + offset_deg;
 q3_open_d = rad2deg(q3_open) + offset_deg;
@@ -62,14 +55,14 @@ q3_open_d = rad2deg(q3_open) + offset_deg;
 % CASE 2: Crossed Circuit (Input Theta 4 = -92.2333)
 % ==========================================
 q4d_cross = -92.2333; 
-q4_2 = deg2rad(q4d_cross) - offset; % Local Theta 4
+q4_2 = deg2rad(q4d_cross) - offset;
 
-% --- Calculate Coefficients for Theta 2 (Crank) ---
+% --- Theta 2 Coefficients ---
 A2 = cos(q4_2) - K1 - K2*cos(q4_2) + K3;
 B2 = -2*sin(q4_2);
 C2 = K1 - (K2+1)*cos(q4_2) + K3;
 
-% --- Calculate Coefficients for Theta 3 (Coupler) ---
+% --- Theta 3 Coefficients ---
 P2 = -2*b*(d + c*cos(q4_2));
 Q2 = -2*b*c*sin(q4_2);
 R2 = d^2 + c^2 + b^2 - a^2 + 2*d*c*cos(q4_2);
@@ -78,24 +71,18 @@ D2 = R2 - P2;
 E2 = 2*Q2;
 F2 = R2 + P2;
 
-% --- Solve for Theta 2 & 3 (Case 2) ---
-q2_sol2_A = 2*atan((-B2 + sqrt(B2^2 - 4*A2*C2))/(2*A2)); 
-q2_sol2_B = 2*atan((-B2 - sqrt(B2^2 - 4*A2*C2))/(2*A2)); 
-
-q3_sol2_A = 2*atan((-E2 + sqrt(E2^2 - 4*D2*F2))/(2*D2)); 
-q3_sol2_B = 2*atan((-E2 - sqrt(E2^2 - 4*D2*F2))/(2*D2));
-
-% Select Pair for Crossed Circuit Plotting (Usually Pair B for this config)
-q2_cross = q2_sol2_B;
-q3_cross = q3_sol2_B;
+% --- Solve Theta 2 & 3 (Case 2) ---
+% Using Solution 2 (Minus root) to force Link 2 DOWN
+q2_cross = 2*atan((-B2 - sqrt(B2^2 - 4*A2*C2))/(2*A2)); 
+q3_cross = 2*atan((-E2 - sqrt(E2^2 - 4*D2*F2))/(2*D2)); 
 
 q2_cross_d = rad2deg(q2_cross) + offset_deg;
 q3_cross_d = rad2deg(q3_cross) + offset_deg;
 
+
 % ==========================================
 % Vector Calculation & Plotting
 % ==========================================
-% Ground Vector
 RO4O2 = d*exp(j*offset); 
 RO4O2x = real(RO4O2); RO4O2y = imag(RO4O2);
 
@@ -121,14 +108,10 @@ RBO4_2x = real(RBO4_2); RBO4_2y = imag(RBO4_2);
 figure(1)
 title('Case 1: Open Circuit (Input q4 = -17.944)');
 hold on;
-% Ground (Pink)
-quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); 
-% Crank (Cyan)
-quiver(0,0, RA1x, RA1y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
-% Coupler (Red)
-quiver(RA1x, RA1y, RBA1x, RBA1y, 0, 'red', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
-% Rocker (Grey)
-quiver(RO4O2x, RO4O2y, RBO4_1x, RBO4_1y, 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); % Pink
+quiver(0,0, RA1x, RA1y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3); % Cyan
+quiver(RA1x, RA1y, RBA1x, RBA1y, 0, 'red', 'MaxHeadSize', 0.5, 'LineWidth', 3); % Red
+quiver(RO4O2x, RO4O2y, RBO4_1x, RBO4_1y, 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); % Grey
 axis equal; grid on;
 xlabel('x (m)'); ylabel('y (m)');
 
@@ -136,18 +119,14 @@ xlabel('x (m)'); ylabel('y (m)');
 figure(2)
 title('Case 2: Crossed Circuit (Input q4 = -92.2333)');
 hold on;
-% Ground (Pink)
-quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); 
-% Crank (Cyan)
-quiver(0,0, RA2x, RA2y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
-% Coupler (Red)
-quiver(RA2x, RA2y, RBA2x, RBA2y, 0, 'red', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
-% Rocker (Grey)
-quiver(RO4O2x, RO4O2y, RBO4_2x, RBO4_2y, 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); % Pink
+quiver(0,0, RA2x, RA2y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3); % Cyan
+quiver(RA2x, RA2y, RBA2x, RBA2y, 0, 'red', 'MaxHeadSize', 0.5, 'LineWidth', 3); % Red
+quiver(RO4O2x, RO4O2y, RBO4_2x, RBO4_2y, 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); % Grey
 axis equal; grid on;
 xlabel('x (m)'); ylabel('y (m)');
 
 % Display Results
 disp('--- Results ---');
-disp(['Case 1 (Open): Theta 2 = ', num2str(q2_open_d), ', Theta 3 = ', num2str(q3_open_d)]);
-disp(['Case 2 (Crossed): Theta 2 = ', num2str(q2_cross_d), ', Theta 3 = ', num2str(q3_cross_d)]);
+disp(['Case 1 (Open Input): Theta 2 = ', num2str(q2_open_d), ', Theta 3 = ', num2str(q3_open_d)]);
+disp(['Case 2 (Crossed Input): Theta 2 = ', num2str(q2_cross_d), ', Theta 3 = ', num2str(q3_cross_d)]);
