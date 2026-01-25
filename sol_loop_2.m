@@ -115,3 +115,36 @@ RBO4_2x = real(RBO4_2); RBO4_2y = imag(RBO4_2);
 
 % --- 9. Plotting Case 1 (Open Circuit) ---
 figure(1)
+title('Case 1: Open Circuit');
+hold on;
+% Ground (Pink)
+quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); 
+% Crank (Green)
+quiver(0,0, RA1x, RA1y, 0, 'Color', 'g', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+% Coupler (Yellow) - From A to B
+quiver(RA1x, RA1y, real(RBA), imag(RBA), 0, 'Color', 'y', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+% Rocker (Grey) - From O4 to B
+quiver(RO4O2x, RO4O2y, real(RBO4_1), imag(RBO4_1), 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+axis equal; grid on;
+xlabel('x (m)'); ylabel('y (m)');
+
+% --- 10. Plotting Case 2 (Crossed Circuit) ---
+figure(2)
+title('Case 2: Crossed Circuit');
+hold on;
+% Ground (Pink)
+quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); 
+% Crank (Green)
+quiver(0,0, RA2x, RA2y, 0, 'Color', 'g', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+% Coupler (Yellow)
+quiver(RA2x, RA2y, real(RBA), imag(RBA), 0, 'Color', 'y', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+% Rocker (Grey)
+quiver(RO4O2x, RO4O2y, real(RBO4_2), imag(RBO4_2), 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+axis equal; grid on;
+xlabel('x (m)'); ylabel('y (m)');
+
+% Display Results
+disp('--- Results ---');
+disp(['Input Theta 3 (Global): ', num2str(q3d_global)]);
+disp(['Case 1 (Open) - Theta 2: ', num2str(q21d), '  Theta 4: ', num2str(q41d)]);
+disp(['Case 2 (Crossed) - Theta 2: ', num2str(q22d), '  Theta 4: ', num2str(q42d)]);
