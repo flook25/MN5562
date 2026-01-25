@@ -51,7 +51,6 @@ E = -2*sin(q3);
 F = K1 + (K4-1)*cos(q3) + K5;
 
 % Solve Angles (Case 1: Open / Case 2: Crossed)
-% Note: Using Minus/Minus for Open based on typical assembly
 q4_L1_open = 2*atan((-B - sqrt(B^2 - 4*A*C))/(2*A));
 q2_L1_open = 2*atan((-E - sqrt(E^2 - 4*D*F))/(2*D));
 
@@ -61,7 +60,6 @@ q2_L1_cross = 2*atan((-E + sqrt(E^2 - 4*D*F))/(2*D));
 % ==========================================
 % SECTION 3: LOOP 2 (Cyan-Red-Grey)
 % Input: Grey (Theta 4 from Loop 1)
-% Logic: Red must be BELOW
 % ==========================================
 a = L2_Loop2; b = L3_Loop2; c = L4_Shared;
 
@@ -72,7 +70,7 @@ K3_L2 = (c^2 - b^2 + a^2 + d^2)/(2*c*a);
 K4_L2 = d/b;
 K5_L2 = (a^2 - d^2 - c^2 - b^2)/(2*c*b);
 
-% --- Case 1 Calculation ---
+% --- Case 1 Calculation (OPEN) ---
 q_in_1 = q4_L1_open; 
 % Coeffs Theta 2 (Cyan)
 A_L2_1 = cos(q_in_1) - K1_L2 - K2_L2*cos(q_in_1) + K3_L2;
@@ -83,11 +81,11 @@ D_L2_1 = cos(q_in_1) - K1_L2 + K4_L2*cos(q_in_1) + K5_L2;
 E_L2_1 = -2*sin(q_in_1);
 F_L2_1 = K1_L2 + (K4_L2-1)*cos(q_in_1) + K5_L2;
 
-% Solve: Choose roots to place Red link "Below" and Cyan "Down"
-q2_Cyan_1 = 2*atan((-B_L2_1 - sqrt(B_L2_1^2 - 4*A_L2_1*C_L2_1))/(2*A_L2_1)); 
-q3_Red_1  = 2*atan((-E_L2_1 - sqrt(E_L2_1^2 - 4*D_L2_1*F_L2_1))/(2*D_L2_1));
+% ** FIXED OPEN CASE: FLIPPED SQRT for Cyan & Red **
+q2_Cyan_1 = 2*atan((-B_L2_1 + sqrt(B_L2_1^2 - 4*A_L2_1*C_L2_1))/(2*A_L2_1)); 
+q3_Red_1  = 2*atan((-E_L2_1 + sqrt(E_L2_1^2 - 4*D_L2_1*F_L2_1))/(2*D_L2_1));
 
-% --- Case 2 Calculation ---
+% --- Case 2 Calculation (CROSSED) ---
 q_in_2 = q4_L1_cross;
 % Coeffs Theta 2 (Cyan)
 A_L2_2 = cos(q_in_2) - K1_L2 - K2_L2*cos(q_in_2) + K3_L2;
@@ -98,7 +96,7 @@ D_L2_2 = cos(q_in_2) - K1_L2 + K4_L2*cos(q_in_2) + K5_L2;
 E_L2_2 = -2*sin(q_in_2);
 F_L2_2 = K1_L2 + (K4_L2-1)*cos(q_in_2) + K5_L2;
 
-% Solve
+% Solve (Standard Crossed)
 q2_Cyan_2 = 2*atan((-B_L2_2 + sqrt(B_L2_2^2 - 4*A_L2_2*C_L2_2))/(2*A_L2_2)); 
 q3_Red_2  = 2*atan((-E_L2_2 + sqrt(E_L2_2^2 - 4*D_L2_2*F_L2_2))/(2*D_L2_2));
 
@@ -115,7 +113,7 @@ K3_L3 = (a^2 - b^2 + c^2 + d^2)/(2*a*c);
 K4_L3 = d/b;
 K5_L3 = (c^2 - d^2 - a^2 - b^2)/(2*a*b);
 
-% --- Case 1 Calculation ---
+% --- Case 1 Calculation (OPEN) ---
 % FORCE STRAIGHT LINE: Add pi (180 deg) to Cyan angle from Loop 2
 q_in_L3_1 = q2_Cyan_1 + pi; 
 
@@ -128,11 +126,11 @@ D_L3_1 = cos(q_in_L3_1) - K1_L3 + K4_L3*cos(q_in_L3_1) + K5_L3;
 E_L3_1 = -2*sin(q_in_L3_1);
 F_L3_1 = K1_L3 + (K4_L3-1)*cos(q_in_L3_1) + K5_L3;
 
-% Solve (Standard Open configuration)
-q4_Brown_1 = 2*atan((-B_L3_1 - sqrt(B_L3_1^2 - 4*A_L3_1*C_L3_1))/(2*A_L3_1));
-q3_Blue_1  = 2*atan((-E_L3_1 - sqrt(E_L3_1^2 - 4*D_L3_1*F_L3_1))/(2*D_L3_1));
+% ** FIXED OPEN CASE: FLIPPED SQRT for Brown & Blue **
+q4_Brown_1 = 2*atan((-B_L3_1 + sqrt(B_L3_1^2 - 4*A_L3_1*C_L3_1))/(2*A_L3_1));
+q3_Blue_1  = 2*atan((-E_L3_1 + sqrt(E_L3_1^2 - 4*D_L3_1*F_L3_1))/(2*D_L3_1));
 
-% --- Case 2 Calculation ---
+% --- Case 2 Calculation (CROSSED) ---
 q_in_L3_2 = q2_Cyan_2 + pi; % Force Straight Line
 
 % Coeffs Theta 4 (Brown)
@@ -144,7 +142,7 @@ D_L3_2 = cos(q_in_L3_2) - K1_L3 + K4_L3*cos(q_in_L3_2) + K5_L3;
 E_L3_2 = -2*sin(q_in_L3_2);
 F_L3_2 = K1_L3 + (K4_L3-1)*cos(q_in_L3_2) + K5_L3;
 
-% Solve
+% Solve (Standard Crossed)
 q4_Brown_2 = 2*atan((-B_L3_2 + sqrt(B_L3_2^2 - 4*A_L3_2*C_L3_2))/(2*A_L3_2));
 q3_Blue_2  = 2*atan((-E_L3_2 + sqrt(E_L3_2^2 - 4*D_L3_2*F_L3_2))/(2*D_L3_2));
 
@@ -180,16 +178,16 @@ V_Brown_2 = L4_Loop3 * exp(j*(q4_Brown_2 + offset));
 
 % --- Plot Case 1 ---
 figure(1)
-title('Case 1: Open Circuit (Straight Cyan Line)'); hold on;
-quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'LineWidth', 4, 'MaxHeadSize', 0.5);  % Pink
+title('Case 1: Open Circuit'); hold on;
+quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'LineWidth', 4, 'MaxHeadSize', 0.5); % Pink
 % Loop 1
 quiver(0,0, real(V_Green_1), imag(V_Green_1), 0, 'green', 'LineWidth', 3, 'MaxHeadSize', 0.5);
 quiver(real(V_Green_1), imag(V_Green_1), real(V_Yellow_1), imag(V_Yellow_1), 0, 'yellow', 'LineWidth', 3, 'MaxHeadSize', 0.5);
 quiver(RO4O2x, RO4O2y, real(V_Grey_1), imag(V_Grey_1), 0, 'Color', [0.5 0.5 0.5], 'LineWidth', 3, 'MaxHeadSize', 0.5);
-% Loop 2 (Cyan Down, Red Below)
+% Loop 2
 quiver(0,0, real(V_Cyan_Down_1), imag(V_Cyan_Down_1), 0, 'cyan', 'LineWidth', 3, 'MaxHeadSize', 0.5);
 quiver(real(V_Cyan_Down_1), imag(V_Cyan_Down_1), real(V_Red_1), imag(V_Red_1), 0, 'red', 'LineWidth', 3, 'MaxHeadSize', 0.5);
-% Loop 3 (Cyan Up, Straight from Loop 2)
+% Loop 3
 quiver(0,0, real(V_Cyan_Up_1), imag(V_Cyan_Up_1), 0, 'cyan', 'LineWidth', 3, 'MaxHeadSize', 0.5, 'LineStyle', ':');
 quiver(real(V_Cyan_Up_1), imag(V_Cyan_Up_1), real(V_Blue_1), imag(V_Blue_1), 0, 'blue', 'LineWidth', 3, 'MaxHeadSize', 0.5);
 quiver(RO4O2x, RO4O2y, real(V_Brown_1), imag(V_Brown_1), 0, 'Color', [0.85 0.5 0.1], 'LineWidth', 3, 'MaxHeadSize', 0.5);
@@ -197,8 +195,8 @@ axis equal; grid on;
 
 % --- Plot Case 2 ---
 figure(2)
-title('Case 2: Crossed Circuit (Straight Cyan Line)'); hold on;
-quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'LineWidth', 4, 'MaxHeadSize', 0.5);  % Pink
+title('Case 2: Crossed Circuit'); hold on;
+quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'LineWidth', 4, 'MaxHeadSize', 0.5); % Pink
 % Loop 1
 quiver(0,0, real(V_Green_2), imag(V_Green_2), 0, 'green', 'LineWidth', 3, 'MaxHeadSize', 0.5);
 quiver(real(V_Green_2), imag(V_Green_2), real(V_Yellow_2), imag(V_Yellow_2), 0, 'yellow', 'LineWidth', 3, 'MaxHeadSize', 0.5);
