@@ -121,4 +121,26 @@ quiver(0,0, RA1x, RA1y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3);
 % Coupler (Red)
 quiver(RA1x, RA1y, RBA1x, RBA1y, 0, 'red', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
 % Rocker (Grey)
-quiver(RO4O2x, RO4O2y, RBO4_1x, RBO4_1y, 0, '
+quiver(RO4O2x, RO4O2y, RBO4_1x, RBO4_1y, 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+axis equal; grid on;
+xlabel('x (m)'); ylabel('y (m)');
+
+% --- Plotting Case 2 ---
+figure(2)
+title('Case 2: Crossed Circuit (Input q4 = -92.2333)');
+hold on;
+% Ground (Pink)
+quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); 
+% Crank (Cyan)
+quiver(0,0, RA2x, RA2y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+% Coupler (Red)
+quiver(RA2x, RA2y, RBA2x, RBA2y, 0, 'red', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+% Rocker (Grey)
+quiver(RO4O2x, RO4O2y, RBO4_2x, RBO4_2y, 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+axis equal; grid on;
+xlabel('x (m)'); ylabel('y (m)');
+
+% Display Results
+disp('--- Results ---');
+disp(['Case 1 (Open Input -17.944): Theta 2 = ', num2str(q2_open_d), ', Theta 3 = ', num2str(q3_open_d)]);
+disp(['Case 2 (Crossed Input -92.2333): Theta 2 = ', num2str(q2_cross_d), ', Theta 3 = ', num2str(q3_cross_d)]);
