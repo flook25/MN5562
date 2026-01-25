@@ -4,7 +4,7 @@ clc
 
 % --- 1. Define Parameters (Unit: meters) ---
 L1 = 0.210; % Ground (d) - Pink
-L2 = 0.118; % Crank (a) - Blue (Half)
+L2 = 0.118; % Crank (a) - Cyan (Half Blue) -> Changed to Cyan
 L3 = 0.210; % Coupler (b) - Red
 L4 = 0.118; % Rocker (c) - Grey
 
@@ -22,19 +22,16 @@ q4d_global = -92.2333; % Known Theta 4 (Global Input)
 q4 = deg2rad(q4d_global) - offset; % Local Theta 4
 
 % --- 3. Find Theta 2 (Crank) ---
-% Using Freudenstein Equation adapted for Theta 4 Input
 % K constants (Standard definition)
 K1 = d/a;
 K2 = d/c;
 K3 = (a^2 - b^2 + c^2 + d^2)/(2*a*c);
 
 % Coefficients for Theta 2: A*t^2 + B*t + C = 0
-% Derived from: (K1 - cos(q4))cos(q2) - sin(q4)sin(q2) + (K3 - K2*cos(q4)) = 0
 term1 = K1 - cos(q4);
 term2 = -sin(q4);
 term3 = K3 - K2*cos(q4);
 
-% Quadratic Coefficients
 A = term3 - term1;
 B = 2*term2;
 C = term3 + term1;
@@ -47,14 +44,12 @@ q21d = rad2deg(q21) + offset_deg;
 q22d = rad2deg(q22) + offset_deg;
 
 % --- 4. Find Theta 3 (Coupler - Red Link) ---
-% Derived from Vector Loop Geometry: R2 + R3 = R1 + R4
-% We eliminate Theta 2 to solve for Theta 3 directly
 % Form: P*cos(q3) + Q*sin(q3) + R = 0
 P = -2*b*(d + c*cos(q4));
 Q = -2*b*c*sin(q4);
 R = d^2 + c^2 + b^2 - a^2 + 2*d*c*cos(q4);
 
-% Quadratic Coefficients (D*t^2 + E*t + F = 0)
+% Coefficients (D*t^2 + E*t + F = 0)
 D = R - P;
 E = 2*Q;
 F = R + P;
@@ -71,7 +66,7 @@ q32d = rad2deg(q32) + offset_deg;
 RO4O2 = d*exp(j*offset); 
 RO4O2x = real(RO4O2); RO4O2y = imag(RO4O2);
 
-% --- Case 1: Open Circuit (Using set 1) ---
+% --- Case 1: Open Circuit ---
 RA1 = a*exp(j*(q21 + offset));       
 RBA1 = b*exp(j*(q31 + offset));        
 RBO4_1 = c*exp(j*(q4 + offset));    
@@ -80,7 +75,7 @@ RA1x = real(RA1); RA1y = imag(RA1);
 RBA1x = real(RBA1); RBA1y = imag(RBA1); 
 RBO4_1x = real(RBO4_1); RBO4_1y = imag(RBO4_1);
 
-% --- Case 2: Crossed Circuit (Using set 2) ---
+% --- Case 2: Crossed Circuit ---
 RA2 = a*exp(j*(q22 + offset));       
 RBA2 = b*exp(j*(q32 + offset));
 RBO4_2 = c*exp(j*(q4 + offset));    
@@ -95,13 +90,13 @@ RBO4_2x = real(RBO4_2); RBO4_2y = imag(RBO4_2);
 figure(1)
 title('Case 1: Open Circuit');
 hold on;
-% Ground (L1 - Pink)
+% Ground (Link 1 - Pink)
 quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); 
-% Crank (L2 - Blue)
-quiver(0,0, RA1x, RA1y, 0, 'blue', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
-% Coupler (L3 - Red)
+% Crank (Link 2 - Cyan/Blue) --> Changed to Cyan
+quiver(0,0, RA1x, RA1y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+% Coupler (Link 3 - Red)
 quiver(RA1x, RA1y, RBA1x, RBA1y, 0, 'red', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
-% Rocker (L4 - Grey) - From O4 to B
+% Rocker (Link 4 - Grey)
 quiver(RO4O2x, RO4O2y, RBO4_1x, RBO4_1y, 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); 
 axis equal; grid on;
 xlabel('x (m)'); ylabel('y (m)');
@@ -110,13 +105,13 @@ xlabel('x (m)'); ylabel('y (m)');
 figure(2)
 title('Case 2: Crossed Circuit');
 hold on;
-% Ground (L1 - Pink)
+% Ground (Link 1 - Pink)
 quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); 
-% Crank (L2 - Blue)
-quiver(0,0, RA2x, RA2y, 0, 'blue', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
-% Coupler (L3 - Red)
+% Crank (Link 2 - Cyan/Blue) --> Changed to Cyan
+quiver(0,0, RA2x, RA2y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
+% Coupler (Link 3 - Red)
 quiver(RA2x, RA2y, RBA2x, RBA2y, 0, 'red', 'MaxHeadSize', 0.5, 'LineWidth', 3); 
-% Rocker (L4 - Grey)
+% Rocker (Link 4 - Grey)
 quiver(RO4O2x, RO4O2y, RBO4_2x, RBO4_2y, 0, 'Color', [0.5 0.5 0.5], 'MaxHeadSize', 0.5, 'LineWidth', 3); 
 axis equal; grid on;
 xlabel('x (m)'); ylabel('y (m)');
