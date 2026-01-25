@@ -21,9 +21,8 @@ offset = deg2rad(offset_deg);
 q3d_global = 19.94; % Input Theta 3 (Global)
 q3 = deg2rad(q3d_global) - offset; % Local Theta 3
 
-% --- 3. Define K Constants for INVERSE Analysis ---
-% Standard Norton uses 'a' as input. Here 'b' (Link 3) is input.
-% We swap 'a' and 'b' in the formulas.
+% --- 3. Define K Constants ---
+
 
 % Set 1: To find Theta 4 (Rocker)
 K1 = d/b; 
