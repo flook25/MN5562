@@ -165,13 +165,13 @@ quiver(RO4O2x, RO4O2y, real(RB1)-RO4O2x, imag(RB1)-RO4O2y, 0, 'Color', [0.5 0.5 
 
 % Draw Acceleration Vectors
 % Red = AA
-quiver(real(RA1), imag(RA1), AA_1x*s_acc, AA_1y*s_acc, 0, 'red', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(RA1), imag(RA1), AA_1x*s_acc/100, AA_1y*s_acc/100, 0, 'red', 'LineWidth', 2, 'MaxHeadSize', 0.5);
 % Blue = ABA (Relative Accel at B)
-quiver(real(RB1), imag(RB1), ABA_1x*s_acc, ABA_1y*s_acc, 0, 'blue', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(RB1), imag(RB1), ABA_1x*s_acc/100, ABA_1y*s_acc/100, 0, 'blue', 'LineWidth', 2, 'MaxHeadSize', 0.5);
 % Green = AB (Total Accel at B)
-quiver(real(RB1), imag(RB1), AB_1x*s_acc, AB_1y*s_acc, 0, 'green', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(RB1), imag(RB1), AB_1x*s_acc/100, AB_1y*s_acc/100, 0, 'green', 'LineWidth', 2, 'MaxHeadSize', 0.5);
 % Black = Check AB (From Link 4)
-quiver(real(RB1), imag(RB1), AB_Check1x*s_acc, AB_Check1y*s_acc, 0, 'black', 'LineWidth', 1, 'MaxHeadSize', 0.5);
+quiver(real(RB1), imag(RB1), AB_Check1x*s_acc/100, AB_Check1y*s_acc/100, 0, 'black', 'LineWidth', 1, 'MaxHeadSize', 0.5);
 
 axis equal; grid on; xlabel('x (m)'); ylabel('y (m)');
 
@@ -190,10 +190,10 @@ quiver(real(RA2), imag(RA2), real(RB2)-real(RA2), imag(RB2)-imag(RA2), 0, 'Color
 quiver(RO4O2x, RO4O2y, real(RB2)-RO4O2x, imag(RB2)-RO4O2y, 0, 'Color', [0.5 0.5 0.5], 'LineWidth', 3, 'MaxHeadSize', 0.1);
 
 % Draw Acceleration Vectors
-quiver(real(RA2), imag(RA2), AA_2x*s_acc, AA_2y*s_acc, 0, 'red', 'LineWidth', 2, 'MaxHeadSize', 0.5);
-quiver(real(RB2), imag(RB2), ABA_2x*s_acc, ABA_2y*s_acc, 0, 'blue', 'LineWidth', 2, 'MaxHeadSize', 0.5);
-quiver(real(RB2), imag(RB2), AB_2x*s_acc, AB_2y*s_acc, 0, 'green', 'LineWidth', 2, 'MaxHeadSize', 0.5);
-quiver(real(RB2), imag(RB2), AB_Check2x*s_acc, AB_Check2y*s_acc, 0, 'black', 'LineWidth', 1, 'MaxHeadSize', 0.5);
+quiver(real(RA2), imag(RA2), AA_2x*s_acc/100, AA_2y*s_acc/100, 0, 'red', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(RB2), imag(RB2), ABA_2x*s_acc/100, ABA_2y*s_acc/100, 0, 'blue', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(RB2), imag(RB2), AB_2x*s_acc/100, AB_2y*s_acc/100, 0, 'green', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(RB2), imag(RB2), AB_Check2x*s_acc/100, AB_Check2y*s_acc/100, 0, 'black', 'LineWidth', 1, 'MaxHeadSize', 0.5);
 
 axis equal; grid on; xlabel('x (m)'); ylabel('y (m)');
 
