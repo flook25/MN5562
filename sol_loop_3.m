@@ -61,4 +61,64 @@ C2 = K1 - (K2+1)*cos(q2_2) + K3;
 
 % --- Calculate Coefficients for Theta 3 ---
 D2 = cos(q2_2) - K1 + K4*cos(q2_2) + K5;
-E2 = -2*
+E2 = -2*sin(q2_2);
+F2 = K1 + (K4-1)*cos(q2_2) + K5;
+
+% --- Solve (Using Plus Sqrt for CROSSED Config) ---
+q4_case2 = 2*atan((-B2 + sqrt(B2^2 - 4*A2*C2))/(2*A2));
+q3_case2 = 2*atan((-E2 + sqrt(E2^2 - 4*D2*F2))/(2*D2));
+
+q4_case2_d = rad2deg(q4_case2) + offset_deg;
+q3_case2_d = rad2deg(q3_case2) + offset_deg;
+
+
+% ==========================================
+% Vector Calculation & Plotting
+% ==========================================
+RO4O2 = d*exp(j*offset);
+RO4O2x = real(RO4O2); RO4O2y = imag(RO4O2);
+
+% --- Vector Case 1 (-92.2333 as Open) ---
+RA1 = a*exp(j*(q2_1 + offset));
+RBA1 = b*exp(j*(q3_case1 + offset));
+RBO4_1 = c*exp(j*(q4_case1 + offset));
+
+RA1x = real(RA1); RA1y = imag(RA1);
+RBA1x = real(RBA1); RBA1y = imag(RBA1);
+RBO4_1x = real(RBO4_1); RBO4_1y = imag(RBO4_1);
+
+% --- Vector Case 2 (-17.944 as Crossed) ---
+RA2 = a*exp(j*(q2_2 + offset));
+RBA2 = b*exp(j*(q3_case2 + offset));
+RBO4_2 = c*exp(j*(q4_case2 + offset));
+
+RA2x = real(RA2); RA2y = imag(RA2);
+RBA2x = real(RBA2); RBA2y = imag(RBA2);
+RBO4_2x = real(RBO4_2); RBO4_2y = imag(RBO4_2);
+
+% --- Plotting Case 1 ---
+figure(1)
+title('Case 1: Input -92.2333 (Open Circuit)');
+hold on;
+quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); % Pink
+quiver(0,0, RA1x, RA1y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3); % Cyan
+quiver(RA1x, RA1y, RBA1x, RBA1y, 0, 'blue', 'MaxHeadSize', 0.5, 'LineWidth', 3); % Blue
+quiver(RO4O2x, RO4O2y, RBO4_1x, RBO4_1y, 0, 'Color', [0.6 0.3 0], 'MaxHeadSize', 0.5, 'LineWidth', 3); % Brown
+axis equal; grid on;
+xlabel('x (m)'); ylabel('y (m)');
+
+% --- Plotting Case 2 ---
+figure(2)
+title('Case 2: Input -17.944 (Crossed Circuit)');
+hold on;
+quiver(0,0, RO4O2x, RO4O2y, 0, 'Color', [1 0 1], 'MaxHeadSize', 0.5, 'LineWidth', 4); % Pink
+quiver(0,0, RA2x, RA2y, 0, 'cyan', 'MaxHeadSize', 0.5, 'LineWidth', 3); % Cyan
+quiver(RA2x, RA2y, RBA2x, RBA2y, 0, 'blue', 'MaxHeadSize', 0.5, 'LineWidth', 3); % Blue
+quiver(RO4O2x, RO4O2y, RBO4_2x, RBO4_2y, 0, 'Color', [0.6 0.3 0], 'MaxHeadSize', 0.5, 'LineWidth', 3); % Brown
+axis equal; grid on;
+xlabel('x (m)'); ylabel('y (m)');
+
+% Display Results
+disp('--- Results ---');
+disp(['Case 1 (Input -92.2333): Theta 3 = ', num2str(q3_case1_d), ', Theta 4 = ', num2str(q4_case1_d)]);
+disp(['Case 2 (Input -17.944): Theta 3 = ', num2str(q3_case2_d), ', Theta 4 = ', num2str(q4_case2_d)]);
