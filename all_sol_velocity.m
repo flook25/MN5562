@@ -105,37 +105,41 @@ w_Brown_2 = (a * w_Cyan_2 * sin(q_in_3_2 - q3_Bl_2)) / (c * sin(q4_Br_2 - q3_Bl_
 w_Blue_2 = (a * w_Cyan_2 * sin(q4_Br_2 - q_in_3_2)) / (b * sin(q4_Br_2 - q3_Bl_2));
 
 % ==========================================
-% SECTION 7: VELOCITY VECTORS
+% SECTION 7: VELOCITY VECTORS (FIXED)
 % ==========================================
-% --- Vectors Case 1 ---
-V_Green_Tip_1 = j * L2_L1 * w_Green_1 * exp(j*(q2_L1_open + offset));
-V_Yellow_Tip_1 = j * L3_Loop1 * w_Yellow * exp(j*(q3 + offset)); % Relative to ground? No, this is rel to A. 
-% Wait, standard vector form: V = j*r*w*exp(j*theta) is velocity of tip relative to tail.
-% Absolute Velocity Calculation:
-% V_Green = V_Green_Tip (Tail is ground)
-% V_Grey = V_Grey_Tip (Tail is ground)
-V_Green_1 = j * L2_L1 * w_Green_1 * exp(j*(q2_L1_open + offset));
+% --- Vectors Case 1 (Open) ---
+% Green (Absolute Velocity)
+V_Green_1 = j * L2_Loop1 * w_Green_1 * exp(j*(q2_L1_open + offset));
+
+% Yellow (Velocity Relative to Green) -> This fixes the error
+V_Yellow_Rel_1 = j * L3_Loop1 * w_Yellow * exp(j*(q3 + offset)); 
+
+% Grey (Absolute Velocity)
 V_Grey_1 = j * L4_Shared * w_Grey_1 * exp(j*(q4_L1_open + offset));
-% V_Yellow (Relative B/A)
-V_Yellow_Rel_1 = j * L3_Loop1 * w_Yellow * exp(j*(q3 + offset));
 
-% Loop 2
-V_Cyan_Down_1 = j * L2_L2 * w_Cyan_1 * exp(j*(q2_Cy_1 + offset));
-V_Red_Rel_1 = j * L3_L2 * w_Red_1 * exp(j*(q3_Rd_1 + offset));
+% Loop 2 Vectors
+V_Cyan_Down_1 = j * L2_Loop2 * w_Cyan_1 * exp(j*(q2_Cy_1 + offset));
+V_Red_Rel_1 = j * L3_Loop2 * w_Red_1 * exp(j*(q3_Rd_1 + offset));
 
-% Loop 3
-V_Cyan_Up_1 = j * L2_L3 * w_Cyan_1 * exp(j*(q_in_3_1 + offset));
-V_Blue_Rel_1 = j * L3_L3 * w_Blue_1 * exp(j*(q3_Bl_1 + offset));
+% Loop 3 Vectors
+V_Cyan_Up_1 = j * L2_Loop3 * w_Cyan_1 * exp(j*(q_in_3_1 + offset));
+V_Blue_Rel_1 = j * L3_Loop3 * w_Blue_1 * exp(j*(q3_Bl_1 + offset));
 V_Brown_Tip_1 = j * L4_Loop3 * w_Brown_1 * exp(j*(q4_Br_1 + offset));
 
-% --- Vectors Case 2 ---
-V_Green_2 = j * L2_L1 * w_Green_2 * exp(j*(q2_L1_cross + offset));
-V_Grey_2 = j * L4_Shared * w_Grey_2 * exp(j*(q4_L1_cross + offset));
+
+% --- Vectors Case 2 (Crossed) ---
+% Loop 1
+V_Green_2 = j * L2_Loop1 * w_Green_2 * exp(j*(q2_L1_cross + offset));
 V_Yellow_Rel_2 = j * L3_Loop1 * w_Yellow * exp(j*(q3 + offset));
-V_Cyan_Down_2 = j * L2_L2 * w_Cyan_2 * exp(j*(q2_Cy_2 + offset));
-V_Red_Rel_2 = j * L3_L2 * w_Red_2 * exp(j*(q3_Rd_2 + offset));
-V_Cyan_Up_2 = j * L2_L3 * w_Cyan_2 * exp(j*(q_in_3_2 + offset));
-V_Blue_Rel_2 = j * L3_L3 * w_Blue_2 * exp(j*(q3_Bl_2 + offset));
+V_Grey_2 = j * L4_Shared * w_Grey_2 * exp(j*(q4_L1_cross + offset));
+
+% Loop 2
+V_Cyan_Down_2 = j * L2_Loop2 * w_Cyan_2 * exp(j*(q2_Cy_2 + offset));
+V_Red_Rel_2 = j * L3_Loop2 * w_Red_2 * exp(j*(q3_Rd_2 + offset));
+
+% Loop 3
+V_Cyan_Up_2 = j * L2_Loop3 * w_Cyan_2 * exp(j*(q_in_3_2 + offset));
+V_Blue_Rel_2 = j * L3_Loop3 * w_Blue_2 * exp(j*(q3_Bl_2 + offset));
 V_Brown_Tip_2 = j * L4_Loop3 * w_Brown_2 * exp(j*(q4_Br_2 + offset));
 
 % ==========================================
@@ -145,21 +149,30 @@ Scale = 1/50; % Scale factor for velocity vectors
 RO4O2 = d*exp(j*offset); RO4O2x = real(RO4O2); RO4O2y = imag(RO4O2);
 
 % --- Calculate Position Vectors Again for Plotting Origins ---
-% Case 1
-P_Green_1 = L2_L1 * exp(j*(q2_L1_open + offset));
+% Case 1 Origins
+P_Green_1 = L2_Loop1 * exp(j*(q2_L1_open + offset));
 P_Grey_1 = L4_Shared * exp(j*(q4_L1_open + offset));
-P_Cyan_Down_1 = L2_L2 * exp(j*(q2_Cy_1 + offset));
-P_Cyan_Up_1 = L2_L3 * exp(j*(q_in_3_1 + offset));
+P_Cyan_Down_1 = L2_Loop2 * exp(j*(q2_Cy_1 + offset));
+P_Cyan_Up_1 = L2_Loop3 * exp(j*(q_in_3_1 + offset));
 P_Brown_1 = L4_Loop3 * exp(j*(q4_Br_1 + offset));
+
+% Case 2 Origins
+P_Green_2 = L2_Loop1 * exp(j*(q2_L1_cross + offset));
+P_Grey_2 = L4_Shared * exp(j*(q4_L1_cross + offset));
+P_Cyan_Down_2 = L2_Loop2 * exp(j*(q2_Cy_2 + offset));
+P_Cyan_Up_2 = L2_Loop3 * exp(j*(q_in_3_2 + offset));
+P_Brown_2 = L4_Loop3 * exp(j*(q4_Br_2 + offset));
+
 
 % --- Figure 1: Case 1 (Open) ---
 figure(1)
 hold on; 
-% Draw Mechanism (Previous code - condensed)
+% Draw Mechanism
 plot([0 real(P_Green_1)], [0 imag(P_Green_1)], 'g', 'LineWidth', 2);
-plot([0 real(P_Grey_1)], [0 imag(P_Grey_1)], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
-plot([0 real(P_Cyan_Down_1)], [0 imag(P_Cyan_Down_1)], 'c', 'LineWidth', 2);
-plot([0 real(P_Cyan_Up_1)], [0 imag(P_Cyan_Up_1)], 'c:', 'LineWidth', 2);
+plot([real(P_Green_1) real(P_Grey_1)+RO4O2x], [imag(P_Green_1) imag(P_Grey_1)+RO4O2y], 'y', 'LineWidth', 2); % Yellow
+plot([RO4O2x real(P_Grey_1)+RO4O2x], [RO4O2y imag(P_Grey_1)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
+plot([RO4O2x real(P_Cyan_Down_1)+RO4O2x], [RO4O2y imag(P_Cyan_Down_1)+RO4O2y], 'c', 'LineWidth', 2);
+plot([RO4O2x real(P_Cyan_Up_1)+RO4O2x], [RO4O2y imag(P_Cyan_Up_1)+RO4O2y], 'c:', 'LineWidth', 2);
 plot([RO4O2x real(P_Brown_1)+RO4O2x], [RO4O2y imag(P_Brown_1)+RO4O2y], 'Color', [0.85 0.5 0.1], 'LineWidth', 2);
 
 % Draw VELOCITY VECTORS (Quiver)
@@ -168,13 +181,33 @@ quiver(real(P_Green_1), imag(P_Green_1), real(V_Green_1)*Scale, imag(V_Green_1)*
 % Yellow Relative (At Tip of Green)
 quiver(real(P_Green_1), imag(P_Green_1), real(V_Yellow_Rel_1)*Scale, imag(V_Yellow_Rel_1)*Scale, 0, 'y', 'LineWidth', 2, 'MaxHeadSize', 0.5);
 % Grey Velocity
-quiver(real(P_Grey_1), imag(P_Grey_1), real(V_Grey_1)*Scale, imag(V_Grey_1)*Scale, 0, 'k', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Grey_1)+RO4O2x, imag(P_Grey_1)+RO4O2y, real(V_Grey_1)*Scale, imag(V_Grey_1)*Scale, 0, 'k', 'LineWidth', 2, 'MaxHeadSize', 0.5);
 % Cyan Down Velocity
-quiver(real(P_Cyan_Down_1), imag(P_Cyan_Down_1), real(V_Cyan_Down_1)*Scale, imag(V_Cyan_Down_1)*Scale, 0, 'c', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Cyan_Down_1)+RO4O2x, imag(P_Cyan_Down_1)+RO4O2y, real(V_Cyan_Down_1)*Scale, imag(V_Cyan_Down_1)*Scale, 0, 'c', 'LineWidth', 2, 'MaxHeadSize', 0.5);
 % Brown Velocity
 quiver(real(P_Brown_1)+RO4O2x, imag(P_Brown_1)+RO4O2y, real(V_Brown_Tip_1)*Scale, imag(V_Brown_Tip_1)*Scale, 0, 'Color', [0.85 0.5 0.1], 'LineWidth', 2, 'MaxHeadSize', 0.5);
 
 axis equal; grid on; title('Case 1: Velocity Analysis');
+
+% --- Figure 2: Case 2 (Crossed) ---
+figure(2)
+hold on; 
+% Draw Mechanism
+plot([0 real(P_Green_2)], [0 imag(P_Green_2)], 'g', 'LineWidth', 2);
+plot([real(P_Green_2) real(P_Grey_2)+RO4O2x], [imag(P_Green_2) imag(P_Grey_2)+RO4O2y], 'y', 'LineWidth', 2); 
+plot([RO4O2x real(P_Grey_2)+RO4O2x], [RO4O2y imag(P_Grey_2)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
+plot([RO4O2x real(P_Cyan_Down_2)+RO4O2x], [RO4O2y imag(P_Cyan_Down_2)+RO4O2y], 'c', 'LineWidth', 2);
+plot([RO4O2x real(P_Cyan_Up_2)+RO4O2x], [RO4O2y imag(P_Cyan_Up_2)+RO4O2y], 'c:', 'LineWidth', 2);
+plot([RO4O2x real(P_Brown_2)+RO4O2x], [RO4O2y imag(P_Brown_2)+RO4O2y], 'Color', [0.85 0.5 0.1], 'LineWidth', 2);
+
+% Draw VELOCITY VECTORS
+quiver(real(P_Green_2), imag(P_Green_2), real(V_Green_2)*Scale, imag(V_Green_2)*Scale, 0, 'g', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Green_2), imag(P_Green_2), real(V_Yellow_Rel_2)*Scale, imag(V_Yellow_Rel_2)*Scale, 0, 'y', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Grey_2)+RO4O2x, imag(P_Grey_2)+RO4O2y, real(V_Grey_2)*Scale, imag(V_Grey_2)*Scale, 0, 'k', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Cyan_Down_2)+RO4O2x, imag(P_Cyan_Down_2)+RO4O2y, real(V_Cyan_Down_2)*Scale, imag(V_Cyan_Down_2)*Scale, 0, 'c', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Brown_2)+RO4O2x, imag(P_Brown_2)+RO4O2y, real(V_Brown_Tip_2)*Scale, imag(V_Brown_Tip_2)*Scale, 0, 'Color', [0.85 0.5 0.1], 'LineWidth', 2, 'MaxHeadSize', 0.5);
+
+axis equal; grid on; title('Case 2: Velocity Analysis');
 
 % --- Display Velocity Results ---
 disp('--- VELOCITY RESULTS (rad/s) ---');
