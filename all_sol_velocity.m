@@ -233,4 +233,50 @@ R_Brown_2 = L4_Loop3*exp(1i*(q4_Brown_2+offset));
 
 % 2. Plot Mechanism
 plot([0 real(RO4O2)], [0 imag(RO4O2)], 'm-', 'LineWidth', 2);
-plot([0 real(R_Green_2)], [0 imag(R_Green_2)], 'g
+plot([0 real(R_Green_2)], [0 imag(R_Green_2)], 'g-', 'LineWidth', 2);
+plot([real(R_Green_2) real(R_Grey_2)+real(RO4O2)], [imag(R_Green_2) imag(R_Grey_2)+imag(RO4O2)], 'y-', 'LineWidth', 2);
+plot([real(RO4O2) real(R_Grey_2)+real(RO4O2)], [imag(RO4O2) imag(R_Grey_2)+imag(RO4O2)], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
+plot([real(RO4O2) real(R_Cyan_2)+real(RO4O2)], [imag(RO4O2) imag(R_Cyan_2)+imag(RO4O2)], 'c-', 'LineWidth', 2);
+plot([real(R_Cyan_2)+real(RO4O2) real(R_Grey_2)+real(RO4O2)], [imag(R_Cyan_2)+imag(RO4O2) imag(R_Grey_2)+imag(RO4O2)], 'r-', 'LineWidth', 2);
+plot([real(RO4O2) real(R_Cyan_Up_2)+real(RO4O2)], [imag(RO4O2) imag(R_Cyan_Up_2)+imag(RO4O2)], 'c:', 'LineWidth', 2);
+plot([real(R_Cyan_Up_2)+real(RO4O2) real(R_Brown_2)+real(RO4O2)], [imag(R_Cyan_Up_2)+imag(RO4O2) imag(R_Brown_2)+imag(RO4O2)], 'b-', 'LineWidth', 2);
+plot([real(RO4O2) real(R_Brown_2)+real(RO4O2)], [imag(RO4O2) imag(R_Brown_2)+imag(RO4O2)], 'Color', [0.6 0.3 0], 'LineWidth', 2);
+
+% 3. Calculate Velocities
+V_Green_2 = 1i * R_Green_2 * w_Green_2;
+V_Yellow_Rel_2 = 1i * R_Yellow_2 * w_Yellow;
+V_Grey_2 = 1i * R_Grey_2 * w_Grey_2;
+V_Cyan_2 = 1i * R_Cyan_2 * w_Cyan_2;
+V_Brown_2 = 1i * R_Brown_2 * w_Brown_2;
+
+% 4. Plot Velocities
+quiver(real(R_Green_2), imag(R_Green_2), real(V_Green_2)*Scale, imag(V_Green_2)*Scale, 0, 'Color', 'g', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(real(R_Green_2), imag(R_Green_2), real(V_Yellow_Rel_2)*Scale, imag(V_Yellow_Rel_2)*Scale, 0, 'Color', 'y', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(real(R_Grey_2)+real(RO4O2), imag(R_Grey_2)+imag(RO4O2), real(V_Grey_2)*Scale, imag(V_Grey_2)*Scale, 0, 'Color', 'k', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(real(R_Cyan_2)+real(RO4O2), imag(R_Cyan_2)+imag(RO4O2), real(V_Cyan_2)*Scale, imag(V_Cyan_2)*Scale, 0, 'Color', 'c', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(real(R_Brown_2)+real(RO4O2), imag(R_Brown_2)+imag(RO4O2), real(V_Brown_2)*Scale, imag(V_Brown_2)*Scale, 0, 'Color', [0.6 0.3 0], 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+
+axis equal; grid on;
+
+% ==========================================
+% SECTION 5: DISPLAY RESULTS
+% ==========================================
+disp('--- VELOCITY RESULTS (rad/s) ---');
+disp('CASE 1 (OPEN):');
+disp(['  w_Green: ', num2str(w_Green_1)]);
+disp(['  w_Yellow (Input): ', num2str(w_Yellow)]);
+disp(['  w_Grey: ', num2str(w_Grey_1)]);
+disp(['  w_Cyan: ', num2str(w_Cyan_1)]);
+disp(['  w_Red: ', num2str(w_Red_1)]);
+disp(['  w_Blue: ', num2str(w_Blue_1)]);
+disp(['  w_Brown: ', num2str(w_Brown_1)]);
+
+disp(' ');
+disp('CASE 2 (CROSSED):');
+disp(['  w_Green: ', num2str(w_Green_2)]);
+disp(['  w_Yellow (Input): ', num2str(w_Yellow)]);
+disp(['  w_Grey: ', num2str(w_Grey_2)]);
+disp(['  w_Cyan: ', num2str(w_Cyan_2)]);
+disp(['  w_Red: ', num2str(w_Red_2)]);
+disp(['  w_Blue: ', num2str(w_Blue_2)]);
+disp(['  w_Brown: ', num2str(w_Brown_2)]);
