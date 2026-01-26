@@ -154,4 +154,52 @@ V_Brown_2x = real(V_Brown_2); V_Brown_2y = imag(V_Brown_2);
 
 % ==========================================
 % PLOTTING (With Scaling)
-% =
+% ==========================================
+Scale = 1/50;
+
+% --- Figure 1: Case 1 ---
+figure(1)
+hold on;
+% Mechanism
+plot([0 real(P_Green_1)], [0 imag(P_Green_1)], 'g', 'LineWidth', 2);
+plot([real(P_Green_1) real(P_Grey_1)+RO4O2x], [imag(P_Green_1) imag(P_Grey_1)+RO4O2y], 'y', 'LineWidth', 2);
+plot([RO4O2x real(P_Grey_1)+RO4O2x], [RO4O2y imag(P_Grey_1)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
+plot([RO4O2x real(P_Cyan_Down_1)+RO4O2x], [RO4O2y imag(P_Cyan_Down_1)+RO4O2y], 'c', 'LineWidth', 2);
+plot([RO4O2x real(P_Brown_1)+RO4O2x], [RO4O2y imag(P_Brown_1)+RO4O2y], 'Color', [0.85 0.5 0.1], 'LineWidth', 2);
+
+% Velocities (Using Components)
+quiver(real(P_Green_1), imag(P_Green_1), V_Green_1x*Scale, V_Green_1y*Scale, 0, 'g', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Green_1), imag(P_Green_1), V_Yellow_1x*Scale, V_Yellow_1y*Scale, 0, 'y', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Grey_1)+RO4O2x, imag(P_Grey_1)+RO4O2y, V_Grey_1x*Scale, V_Grey_1y*Scale, 0, 'k', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Cyan_Down_1)+RO4O2x, imag(P_Cyan_Down_1)+RO4O2y, V_Cyan_1x*Scale, V_Cyan_1y*Scale, 0, 'c', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Brown_1)+RO4O2x, imag(P_Brown_1)+RO4O2y, V_Brown_1x*Scale, V_Brown_1y*Scale, 0, 'Color', [0.85 0.5 0.1], 'LineWidth', 2, 'MaxHeadSize', 0.5);
+axis equal; grid on; title('Case 1: Velocity');
+
+% --- Figure 2: Case 2 ---
+figure(2)
+hold on;
+% Mechanism
+plot([0 real(P_Green_2)], [0 imag(P_Green_2)], 'g', 'LineWidth', 2);
+plot([real(P_Green_2) real(P_Grey_2)+RO4O2x], [imag(P_Green_2) imag(P_Grey_2)+RO4O2y], 'y', 'LineWidth', 2);
+plot([RO4O2x real(P_Grey_2)+RO4O2x], [RO4O2y imag(P_Grey_2)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
+plot([RO4O2x real(P_Cyan_Down_2)+RO4O2x], [RO4O2y imag(P_Cyan_Down_2)+RO4O2y], 'c', 'LineWidth', 2);
+plot([RO4O2x real(P_Brown_2)+RO4O2x], [RO4O2y imag(P_Brown_2)+RO4O2y], 'Color', [0.85 0.5 0.1], 'LineWidth', 2);
+
+% Velocities
+quiver(real(P_Green_2), imag(P_Green_2), V_Green_2x*Scale, V_Green_2y*Scale, 0, 'g', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Green_2), imag(P_Green_2), V_Yellow_2x*Scale, V_Yellow_2y*Scale, 0, 'y', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Grey_2)+RO4O2x, imag(P_Grey_2)+RO4O2y, V_Grey_2x*Scale, V_Grey_2y*Scale, 0, 'k', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Cyan_Down_2)+RO4O2x, imag(P_Cyan_Down_2)+RO4O2y, V_Cyan_2x*Scale, V_Cyan_2y*Scale, 0, 'c', 'LineWidth', 2, 'MaxHeadSize', 0.5);
+quiver(real(P_Brown_2)+RO4O2x, imag(P_Brown_2)+RO4O2y, V_Brown_2x*Scale, V_Brown_2y*Scale, 0, 'Color', [0.85 0.5 0.1], 'LineWidth', 2, 'MaxHeadSize', 0.5);
+axis equal; grid on; title('Case 2: Velocity');
+
+% --- Display Results ---
+disp('--- VELOCITY RESULTS (rad/s) ---');
+disp('CASE 1 (OPEN):');
+disp(['  w_Yellow (Input): ', num2str(w_Yellow)]);
+disp(['  w_Green: ', num2str(w_Green_1)]);
+disp(['  w_Grey:  ', num2str(w_Grey_1)]);
+disp(['  w_Cyan:  ', num2str(w_Cyan_1)]);
+disp(['  w_Red:   ', num2str(w_Red_1)]);
+disp(['  w_Blue:  ', num2str(w_Blue_1)]);
+disp(['  w_Brown: ', num2str(w_Brown_1)]);
