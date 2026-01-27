@@ -27,10 +27,10 @@ q3 = deg2rad(q3d_global) - offset;
 w_Yellow = -2.2; % Input Angular Velocity
 
 % ==========================================
-% SECTION 2: POSITION ANALYSIS (CALCULATE ANGLES)
+% SECTION 2: POSITION ANALYSIS
 % ==========================================
 
-% --- LOOP 1: Green-Yellow-Grey ---
+% --- LOOP 1 ---
 a = L2_Loop1; b = L3_Loop1; c = L4_Shared;
 K1=d/b; K2=d/c; K3=(b^2-a^2+c^2+d^2)/(2*b*c); K4=d/a; K5=(c^2-d^2-b^2-a^2)/(2*b*a);
 A=cos(q3)-K1-K2*cos(q3)+K3; B=-2*sin(q3); C=K1-(K2+1)*cos(q3)+K3;
@@ -41,43 +41,43 @@ q2_L1_open = 2*atan((-E - sqrt(E^2 - 4*D*F))/(2*D));
 q4_L1_cross = 2*atan((-B + sqrt(B^2 - 4*A*C))/(2*A));
 q2_L1_cross = 2*atan((-E + sqrt(E^2 - 4*D*F))/(2*D));
 
-% --- LOOP 2: Cyan-Red-Grey ---
+% --- LOOP 2 ---
 a = L2_Loop2; b = L3_Loop2; c = L4_Shared;
 K1_L2=d/c; K2_L2=d/a; K3_L2=(c^2-b^2+a^2+d^2)/(2*c*a); K4_L2=d/b; K5_L2=(a^2-d^2-c^2-b^2)/(2*c*b);
 
-% Case 1 (Open Input)
+% Case 1 (Open)
 q_in_1 = q4_L1_open;
 A2_1=cos(q_in_1)-K1_L2-K2_L2*cos(q_in_1)+K3_L2; B2_1=-2*sin(q_in_1); C2_1=K1_L2-(K2_L2+1)*cos(q_in_1)+K3_L2;
 D2_1=cos(q_in_1)-K1_L2+K4_L2*cos(q_in_1)+K5_L2; E2_1=-2*sin(q_in_1); F2_1=K1_L2+(K4_L2-1)*cos(q_in_1)+K5_L2;
 q2_Cyan_1 = 2*atan((-B2_1 + sqrt(B2_1^2 - 4*A2_1*C2_1))/(2*A2_1)); 
 q3_Red_1 = 2*atan((-E2_1 + sqrt(E2_1^2 - 4*D2_1*F2_1))/(2*D2_1));
 
-% Case 2 (Crossed Input)
+% Case 2 (Crossed)
 q_in_2 = q4_L1_cross;
 A2_2=cos(q_in_2)-K1_L2-K2_L2*cos(q_in_2)+K3_L2; B2_2=-2*sin(q_in_2); C2_2=K1_L2-(K2_L2+1)*cos(q_in_2)+K3_L2;
 D2_2=cos(q_in_2)-K1_L2+K4_L2*cos(q_in_2)+K5_L2; E2_2=-2*sin(q_in_2); F2_2=K1_L2+(K4_L2-1)*cos(q_in_2)+K5_L2;
 q2_Cyan_2 = 2*atan((-B2_2 + sqrt(B2_2^2 - 4*A2_2*C2_2))/(2*A2_2)); 
 q3_Red_2 = 2*atan((-E2_2 + sqrt(E2_2^2 - 4*D2_2*F2_2))/(2*D2_2));
 
-% --- LOOP 3: Cyan-Blue-Brown ---
+% --- LOOP 3 ---
 a = L2_Loop3; b = L3_Loop3; c = L4_Loop3;
 K1_L3=d/a; K2_L3=d/c; K3_L3=(a^2-b^2+c^2+d^2)/(2*a*c); K4_L3=d/b; K5_L3=(c^2-d^2-a^2-b^2)/(2*a*b);
 
-% Case 1 (Open Input)
+% Case 1 (Open)
 q_in_3_1 = q2_Cyan_1 + pi;
 A3_1=cos(q_in_3_1)-K1_L3-K2_L3*cos(q_in_3_1)+K3_L3; B3_1=-2*sin(q_in_3_1); C3_1=K1_L3-(K2_L3+1)*cos(q_in_3_1)+K3_L3;
 D3_1=cos(q_in_3_1)-K1_L3+K4_L3*cos(q_in_3_1)+K5_L3; E3_1=-2*sin(q_in_3_1); F3_1=K1_L3+(K4_L3-1)*cos(q_in_3_1)+K5_L3;
 q4_Brown_1 = 2*atan((-B3_1 + sqrt(B3_1^2 - 4*A3_1*C3_1))/(2*A3_1));
 q3_Blue_1 = 2*atan((-E3_1 + sqrt(E3_1^2 - 4*D3_1*F3_1))/(2*D3_1));
 
-% Case 2 (Crossed Input)
+% Case 2 (Crossed)
 q_in_3_2 = q2_Cyan_2 + pi;
 A3_2=cos(q_in_3_2)-K1_L3-K2_L3*cos(q_in_3_2)+K3_L3; B3_2=-2*sin(q_in_3_2); C3_2=K1_L3-(K2_L3+1)*cos(q_in_3_2)+K3_L3;
 D3_2=cos(q_in_3_2)-K1_L3+K4_L3*cos(q_in_3_2)+K5_L3; E3_2=-2*sin(q_in_3_2); F3_2=K1_L3+(K4_L3-1)*cos(q_in_3_2)+K5_L3;
 q4_Brown_2 = 2*atan((-B3_2 + sqrt(B3_2^2 - 4*A3_2*C3_2))/(2*A3_2));
 q3_Blue_2 = 2*atan((-E3_2 + sqrt(E3_2^2 - 4*D3_2*F3_2))/(2*D3_2));
 
-% --- DISPLAY POSITION RESULTS ---
+% --- DISPLAY ANGLES ---
 disp('=== POSITION RESULTS (Degrees) ===');
 disp('CASE 1 (OPEN):');
 disp(['  Green:  ', num2str(rad2deg(q2_L1_open)+offset_deg)]);
@@ -90,7 +90,7 @@ disp(['  Brown:  ', num2str(rad2deg(q4_Brown_1)+offset_deg)]);
 disp(' ');
 disp('CASE 2 (CROSSED):');
 disp(['  Green:  ', num2str(rad2deg(q2_L1_cross)+offset_deg)]);
-disp(['  Yellow: ', num2str(q3d_global)]); % <--- ADDED YELLOW
+disp(['  Yellow: ', num2str(q3d_global)]);
 disp(['  Grey:   ', num2str(rad2deg(q4_L1_cross)+offset_deg)]);
 disp(['  Cyan:   ', num2str(rad2deg(q2_Cyan_2)+offset_deg)]);
 disp(['  Red:    ', num2str(rad2deg(q3_Red_2)+offset_deg)]);
@@ -99,7 +99,7 @@ disp(['  Brown:  ', num2str(rad2deg(q4_Brown_2)+offset_deg)]);
 disp(' ');
 
 % ==========================================
-% SECTION 3: VELOCITY ANALYSIS (CALCULATE OMEGAS)
+% SECTION 3: VELOCITY ANALYSIS
 % ==========================================
 % w_Yellow = -2.2
 
@@ -143,7 +143,7 @@ disp(['  w_Brown: ', num2str(w_Brown_1)]);
 disp(' ');
 disp('CASE 2 (CROSSED):');
 disp(['  w_Green: ', num2str(w_Green_2)]);
-disp(['  w_Yellow (Input): ', num2str(w_Yellow)]); % <--- ADDED YELLOW
+disp(['  w_Yellow (Input): ', num2str(w_Yellow)]);
 disp(['  w_Grey:  ', num2str(w_Grey_2)]);
 disp(['  w_Cyan:  ', num2str(w_Cyan_2)]);
 disp(['  w_Red:   ', num2str(w_Red_2)]);
@@ -161,7 +161,7 @@ RO4O2x = real(RO4O2); RO4O2y = imag(RO4O2);
 figure(1)
 hold on; title('Case 1: Open Circuit (Position & Velocity)');
 
-% 1. Create Vectors
+% 1. Vectors
 R_Green = L2_Loop1*exp(1i*(q2_L1_open+offset));
 R_Yellow = L3_Loop1*exp(1i*(q3+offset));
 R_Grey = L4_Shared*exp(1i*(q4_L1_open+offset));
@@ -171,11 +171,11 @@ R_Cyan_Up = L2_Loop3*exp(1i*(q_in_3_1+offset));
 R_Blue = L3_Loop3*exp(1i*(q3_Blue_1+offset));
 R_Brown = L4_Loop3*exp(1i*(q4_Brown_1+offset));
 
-% 2. Plot Position
+% 2. Plot Mechanism (Position) - [Added Ground Pink]
+plot([0 RO4O2x], [0 RO4O2y], 'm-', 'LineWidth', 2); % Ground (Pink)
 plot([0 real(R_Green)], [0 imag(R_Green)], 'g-', 'LineWidth', 2);
 plot([real(R_Green) real(R_Grey)+RO4O2x], [imag(R_Green) imag(R_Grey)+RO4O2y], 'y-', 'LineWidth', 2);
 plot([RO4O2x real(R_Grey)+RO4O2x], [RO4O2y imag(R_Grey)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
-plot([0 RO4O2x], [0 RO4O2y], 'm-', 'LineWidth', 2);
 plot([RO4O2x real(R_Cyan)+RO4O2x], [RO4O2y imag(R_Cyan)+RO4O2y], 'c-', 'LineWidth', 2);
 plot([real(R_Cyan)+RO4O2x real(R_Grey)+RO4O2x], [imag(R_Cyan)+RO4O2y imag(R_Grey)+RO4O2y], 'r-', 'LineWidth', 2);
 plot([RO4O2x real(R_Cyan_Up)+RO4O2x], [RO4O2y imag(R_Cyan_Up)+RO4O2y], 'c:', 'LineWidth', 2);
@@ -204,7 +204,7 @@ axis equal; grid on;
 figure(2)
 hold on; title('Case 2: Crossed Circuit (Position & Velocity)');
 
-% 1. Create Vectors
+% 1. Vectors
 R_Green_2 = L2_Loop1*exp(1i*(q2_L1_cross+offset));
 R_Yellow_2 = L3_Loop1*exp(1i*(q3+offset));
 R_Grey_2 = L4_Shared*exp(1i*(q4_L1_cross+offset));
@@ -214,8 +214,8 @@ R_Cyan_Up_2 = L2_Loop3*exp(1i*(q_in_3_2+offset));
 R_Blue_2 = L3_Loop3*exp(1i*(q3_Blue_2+offset));
 R_Brown_2 = L4_Loop3*exp(1i*(q4_Brown_2+offset));
 
-% 2. Plot Position
-plot([0 RO4O2x], [0 RO4O2y], 'm-', 'LineWidth', 2);
+% 2. Plot Mechanism - [Added Ground Pink]
+plot([0 RO4O2x], [0 RO4O2y], 'm-', 'LineWidth', 2); % Ground
 plot([0 real(R_Green_2)], [0 imag(R_Green_2)], 'g-', 'LineWidth', 2);
 plot([real(R_Green_2) real(R_Grey_2)+RO4O2x], [imag(R_Green_2) imag(R_Grey_2)+RO4O2y], 'y-', 'LineWidth', 2);
 plot([RO4O2x real(R_Grey_2)+RO4O2x], [RO4O2y imag(R_Grey_2)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
