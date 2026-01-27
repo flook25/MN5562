@@ -165,7 +165,7 @@ R_Cyan_Up = L2_Loop3*exp(1i*(q_in_3_1+offset));
 R_Blue = L3_Loop3*exp(1i*(q3_Blue_1+offset));
 R_Brown = L4_Loop3*exp(1i*(q4_Brown_1+offset));
 
-% 2. Plot Mechanism (Position) - วาดโครงสร้างลิ้งค์
+% 2. Plot Mechanism (Position) 
 % Loop 1
 plot([0 real(R_Green)], [0 imag(R_Green)], 'g-', 'LineWidth', 2); % Green
 plot([real(R_Green) real(R_Grey)+RO4O2x], [imag(R_Green) imag(R_Grey)+RO4O2y], 'y-', 'LineWidth', 2); % Yellow
