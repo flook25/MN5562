@@ -177,7 +177,7 @@ plot([RO4O2x real(R_Cyan)+RO4O2x], [RO4O2y imag(R_Cyan)+RO4O2y], 'c-', 'LineWidt
 plot([real(R_Cyan)+RO4O2x real(R_Grey)+RO4O2x], [imag(R_Cyan)+RO4O2y imag(R_Grey)+RO4O2y], 'r-', 'LineWidth', 2); % Red
 
 % Loop 3
-plot([RO4O2x real(R_Cyan_Up)+RO4O2x], [RO4O2y imag(R_Cyan_Up)+RO4O2y], 'c:', 'LineWidth', 2); % Cyan Up
+plot([RO4O2x real(R_Cyan_Up)+RO4O2x], [RO4O2y imag(R_Cyan_Up)+RO4O2y], 'c-', 'LineWidth', 2); % Cyan Up
 plot([real(R_Cyan_Up)+RO4O2x real(R_Brown)+RO4O2x], [imag(R_Cyan_Up)+RO4O2y imag(R_Brown)+RO4O2y], 'b-', 'LineWidth', 2); % Blue
 plot([RO4O2x real(R_Brown)+RO4O2x], [RO4O2y imag(R_Brown)+RO4O2y], 'Color', [0.6 0.3 0], 'LineWidth', 2); % Brown
 
@@ -226,7 +226,7 @@ plot([real(R_Green_2) real(R_Grey_2)+RO4O2x], [imag(R_Green_2) imag(R_Grey_2)+RO
 plot([RO4O2x real(R_Grey_2)+RO4O2x], [RO4O2y imag(R_Grey_2)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
 plot([RO4O2x real(R_Cyan_2)+RO4O2x], [RO4O2y imag(R_Cyan_2)+RO4O2y], 'c-', 'LineWidth', 2);
 plot([real(R_Cyan_2)+RO4O2x real(R_Grey_2)+RO4O2x], [imag(R_Cyan_2)+RO4O2y imag(R_Grey_2)+RO4O2y], 'r-', 'LineWidth', 2);
-plot([RO4O2x real(R_Cyan_Up_2)+RO4O2x], [RO4O2y imag(R_Cyan_Up_2)+RO4O2y], 'c:', 'LineWidth', 2);
+plot([RO4O2x real(R_Cyan_Up_2)+RO4O2x], [RO4O2y imag(R_Cyan_Up_2)+RO4O2y], 'c-', 'LineWidth', 2);
 plot([real(R_Cyan_Up_2)+RO4O2x real(R_Brown_2)+RO4O2x], [imag(R_Cyan_Up_2)+RO4O2y imag(R_Brown_2)+RO4O2y], 'b-', 'LineWidth', 2);
 plot([RO4O2x real(R_Brown_2)+RO4O2x], [RO4O2y imag(R_Brown_2)+RO4O2y], 'Color', [0.6 0.3 0], 'LineWidth', 2);
 
