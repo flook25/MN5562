@@ -190,4 +190,53 @@ V_Grey_2 = 1i * R_Grey_2 * w_Grey_2;
 V_Cyan_2 = 1i * R_Cyan_2 * w_Cyan_2;
 V_Brown_2 = 1i * R_Brown_2 * w_Brown_2;
 
-%
+% 3. Extract Components
+Green_x2 = real(R_Green_2); Green_y2 = imag(R_Green_2);
+Grey_x2 = real(R_Grey_2)+RO4O2x; Grey_y2 = imag(R_Grey_2)+RO4O2y;
+Cyan_x2 = real(R_Cyan_2)+RO4O2x; Cyan_y2 = imag(R_Cyan_2)+RO4O2y;
+Brown_x2 = real(R_Brown_2)+RO4O2x; Brown_y2 = imag(R_Brown_2)+RO4O2y;
+
+vGreen_x2 = real(V_Green_2); vGreen_y2 = imag(V_Green_2);
+vYellow_x2 = real(V_Yellow_Rel_2); vYellow_y2 = imag(V_Yellow_Rel_2);
+vGrey_x2 = real(V_Grey_2); vGrey_y2 = imag(V_Grey_2);
+vCyan_x2 = real(V_Cyan_2); vCyan_y2 = imag(V_Cyan_2);
+vBrown_x2 = real(V_Brown_2); vBrown_y2 = imag(V_Brown_2);
+
+% 4. Plot Mechanism
+plot([0 Green_x2], [0 Green_y2], 'g-', 'LineWidth', 2);
+plot([Green_x2 Grey_x2], [Green_y2 Grey_y2], 'y-', 'LineWidth', 2);
+plot([RO4O2x Grey_x2], [RO4O2y Grey_y2], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
+plot([RO4O2x Cyan_x2], [RO4O2y Cyan_y2], 'c-', 'LineWidth', 2);
+plot([RO4O2x real(R_Cyan_Up_2)+RO4O2x], [RO4O2y imag(R_Cyan_Up_2)+RO4O2y], 'c:', 'LineWidth', 2);
+plot([RO4O2x Brown_x2], [RO4O2y Brown_y2], 'Color', [0.6 0.3 0], 'LineWidth', 2);
+
+% 5. Plot Quivers
+quiver(Green_x2, Green_y2, vGreen_x2*Scale, vGreen_y2*Scale, 0, 'Color', 'g', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(Green_x2, Green_y2, vYellow_x2*Scale, vYellow_y2*Scale, 0, 'Color', 'y', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(Grey_x2, Grey_y2, vGrey_x2*Scale, vGrey_y2*Scale, 0, 'Color', 'k', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(Cyan_x2, Cyan_y2, vCyan_x2*Scale, vCyan_y2*Scale, 0, 'Color', 'c', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(Brown_x2, Brown_y2, vBrown_x2*Scale, vBrown_y2*Scale, 0, 'Color', [0.6 0.3 0], 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+
+axis equal; grid on;
+
+% ==========================================
+% SECTION 5: DISPLAY RESULTS
+% ==========================================
+disp('--- ANGULAR VELOCITY RESULTS (rad/s) ---');
+disp(['w_Yellow (Input): ', num2str(w_Yellow)]);
+disp(' ');
+disp('CASE 1 (OPEN):');
+disp(['  w_Green: ', num2str(w_Green_1)]);
+disp(['  w_Grey:  ', num2str(w_Grey_1)]);
+disp(['  w_Cyan:  ', num2str(w_Cyan_1)]);
+disp(['  w_Red:   ', num2str(w_Red_1)]);
+disp(['  w_Blue:  ', num2str(w_Blue_1)]);
+disp(['  w_Brown: ', num2str(w_Brown_1)]);
+disp(' ');
+disp('CASE 2 (CROSSED):');
+disp(['  w_Green: ', num2str(w_Green_2)]);
+disp(['  w_Grey:  ', num2str(w_Grey_2)]);
+disp(['  w_Cyan:  ', num2str(w_Cyan_2)]);
+disp(['  w_Red:   ', num2str(w_Red_2)]);
+disp(['  w_Blue:  ', num2str(w_Blue_2)]);
+disp(['  w_Brown: ', num2str(w_Brown_2)]);
