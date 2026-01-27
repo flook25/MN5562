@@ -5,6 +5,7 @@ clc
 % ==========================================
 % SECTION 1: PARAMETERS & INPUT
 % ==========================================
+% --- Dimensions (Meters) ---
 L1 = 0.210; % Ground (Pink)
 L2_Loop1 = 0.180; % Green
 L3_Loop1 = 0.180; % Yellow
@@ -21,13 +22,13 @@ d = L1;
 offset_deg = 0.81;
 offset = deg2rad(offset_deg);
 
-q3d_global = 19.94; 
+q3d_global = 19.94; % Input Theta 3 (Yellow)
 q3 = deg2rad(q3d_global) - offset;
 
 w_Yellow = -2.2; % Input Angular Velocity (rad/s)
 
 % ==========================================
-% SECTION 2: POSITION ANALYSIS
+% SECTION 2: POSITION ANALYSIS (CALCULATE ANGLES)
 % ==========================================
 
 % --- LOOP 1: Green-Yellow-Grey ---
@@ -77,7 +78,7 @@ D3_2=cos(q_in_3_2)-K1_L3+K4_L3*cos(q_in_3_2)+K5_L3; E3_2=-2*sin(q_in_3_2); F3_2=
 q4_Brown_2 = 2*atan((-B3_2 + sqrt(B3_2^2 - 4*A3_2*C3_2))/(2*A3_2));
 q3_Blue_2 = 2*atan((-E3_2 + sqrt(E3_2^2 - 4*D3_2*F3_2))/(2*D3_2));
 
-% --- DISPLAY ANGLES ---
+% --- DISPLAY POSITION RESULTS ---
 disp('======================================');
 disp('       POSITION RESULTS (Degrees)');
 disp('======================================');
@@ -101,7 +102,7 @@ disp(['  Brown:  ', num2str(rad2deg(q4_Brown_2)+offset_deg)]);
 disp(' ');
 
 % ==========================================
-% SECTION 3: VELOCITY ANALYSIS
+% SECTION 3: VELOCITY ANALYSIS (CALCULATE OMEGAS)
 % ==========================================
 % w_Yellow = -2.2
 
@@ -157,7 +158,7 @@ disp(['  w_Brown: ', num2str(w_Brown_2)]);
 % ==========================================
 % SECTION 4: VECTORS & PLOTTING
 % ==========================================
-Scale = 0.6;
+Scale = 0.5;
 RO4O2 = L1*exp(1i*offset);
 RO4O2x = real(RO4O2); RO4O2y = imag(RO4O2);
 
@@ -165,28 +166,40 @@ RO4O2x = real(RO4O2); RO4O2y = imag(RO4O2);
 figure(1)
 hold on; title('Case 1: Open Circuit (Position & Velocity)');
 
-% 1. Create Vectors
-R_Green = L2_Loop1*exp(1i*(q2_L1_open+offset));
-R_Yellow = L3_Loop1*exp(1i*(q3+offset));
-R_Grey = L4_Shared*exp(1i*(q4_L1_open+offset));
-R_Cyan = L2_Loop2*exp(1i*(q2_Cyan_1+offset));
-R_Red = L3_Loop2*exp(1i*(q3_Red_1+offset));
-R_Cyan_Up = L2_Loop3*exp(1i*(q_in_3_1+offset));
-R_Blue = L3_Loop3*exp(1i*(q3_Blue_1+offset));
-R_Brown = L4_Loop3*exp(1i*(q4_Brown_1+offset));
+% 1. Create Position Vectors (Relative to Link Origins)
+% Loop 1
+R_Green = L2_Loop1*exp(1i*(q2_L1_open+offset)); % Tail at O2
+R_Yellow = L3_Loop1*exp(1i*(q3+offset)); % Tail at Green Tip
+R_Grey = L4_Shared*exp(1i*(q4_L1_open+offset)); % Tail at O4
+
+% Loop 2 (Corrected Origin: Starts at Grey Tip / O4)
+R_Cyan = L2_Loop2*exp(1i*(q2_Cyan_1+offset)); % Tail at O4 (RO4O2)
+R_Red = L3_Loop2*exp(1i*(q3_Red_1+offset)); % Tail at Cyan Tip
+
+% Loop 3
+R_Cyan_Up = L2_Loop3*exp(1i*(q_in_3_1+offset)); % Tail at O4 (RO4O2)
+R_Blue = L3_Loop3*exp(1i*(q3_Blue_1+offset)); % Tail at Cyan Up Tip
+R_Brown = L4_Loop3*exp(1i*(q4_Brown_1+offset)); % Tail at O4 (RO4O2)
 
 % 2. Plot Mechanism (Position)
-plot([0 RO4O2x], [0 RO4O2y], 'm-', 'LineWidth', 2); % Ground
+% Ground
+plot([0 RO4O2x], [0 RO4O2y], 'm-', 'LineWidth', 2); 
+
+% Loop 1
 plot([0 real(R_Green)], [0 imag(R_Green)], 'g-', 'LineWidth', 2); % Green
 plot([real(R_Green) real(R_Grey)+RO4O2x], [imag(R_Green) imag(R_Grey)+RO4O2y], 'y-', 'LineWidth', 2); % Yellow
 plot([RO4O2x real(R_Grey)+RO4O2x], [RO4O2y imag(R_Grey)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2); % Grey
+
+% Loop 2
 plot([RO4O2x real(R_Cyan)+RO4O2x], [RO4O2y imag(R_Cyan)+RO4O2y], 'c-', 'LineWidth', 2); % Cyan
 plot([real(R_Cyan)+RO4O2x real(R_Grey)+RO4O2x], [imag(R_Cyan)+RO4O2y imag(R_Grey)+RO4O2y], 'r-', 'LineWidth', 2); % Red
+
+% Loop 3
 plot([RO4O2x real(R_Cyan_Up)+RO4O2x], [RO4O2y imag(R_Cyan_Up)+RO4O2y], 'c:', 'LineWidth', 2); % Cyan Up
 plot([real(R_Cyan_Up)+RO4O2x real(R_Brown)+RO4O2x], [imag(R_Cyan_Up)+RO4O2y imag(R_Brown)+RO4O2y], 'b-', 'LineWidth', 2); % Blue
 plot([RO4O2x real(R_Brown)+RO4O2x], [RO4O2y imag(R_Brown)+RO4O2y], 'Color', [0.6 0.3 0], 'LineWidth', 2); % Brown
 
-% 3. Calculate Velocities
+% 3. Calculate Velocities (V = 1i * R * w)
 V_Green = 1i * R_Green * w_Green_1;
 V_Yellow_Rel = 1i * R_Yellow * w_Yellow;
 V_Grey = 1i * R_Grey * w_Grey_1;
@@ -194,12 +207,18 @@ V_Cyan = 1i * R_Cyan * w_Cyan_1;
 V_Cyan_Up = 1i * R_Cyan_Up * w_Cyan_1;
 V_Brown = 1i * R_Brown * w_Brown_1;
 
-% 4. Plot Velocities (At Link Tips)
+% 4. Plot Velocities (Quiver starts at Link Tip)
+% Green (Start at Green Tip)
 quiver(real(R_Green), imag(R_Green), real(V_Green)*Scale, imag(V_Green)*Scale, 0, 'Color', 'g', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+% Yellow Rel (Start at Green Tip - Relative Velocity)
 quiver(real(R_Green), imag(R_Green), real(V_Yellow_Rel)*Scale, imag(V_Yellow_Rel)*Scale, 0, 'Color', 'y', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+% Grey (Start at Grey Tip)
 quiver(real(R_Grey)+RO4O2x, imag(R_Grey)+RO4O2y, real(V_Grey)*Scale, imag(V_Grey)*Scale, 0, 'k', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+% Cyan Down (Start at Cyan Tip)
 quiver(real(R_Cyan)+RO4O2x, imag(R_Cyan)+RO4O2y, real(V_Cyan)*Scale, imag(V_Cyan)*Scale, 0, 'c', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+% Cyan Up (Start at Cyan Up Tip)
 quiver(real(R_Cyan_Up)+RO4O2x, imag(R_Cyan_Up)+RO4O2y, real(V_Cyan_Up)*Scale, imag(V_Cyan_Up)*Scale, 0, 'c', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+% Brown (Start at Brown Tip)
 quiver(real(R_Brown)+RO4O2x, imag(R_Brown)+RO4O2y, real(V_Brown)*Scale, imag(V_Brown)*Scale, 0, 'Color', [0.6 0.3 0], 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
 
 axis equal; grid on;
@@ -238,8 +257,8 @@ V_Cyan_Up_2 = 1i * R_Cyan_Up_2 * w_Cyan_2;
 V_Brown_2 = 1i * R_Brown_2 * w_Brown_2;
 
 % 4. Plot Velocities
-quiver(real(R_Green_2), imag(R_Green_2), real(V_Green_2)*Scale, imag(V_Green_2)*Scale, 0, 'g', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
-quiver(real(R_Green_2), imag(R_Green_2), real(V_Yellow_Rel_2)*Scale, imag(V_Yellow_Rel_2)*Scale, 0, 'y', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(real(R_Green_2), imag(R_Green_2), real(V_Green_2)*Scale, imag(V_Green_2)*Scale, 0, 'Color', 'g', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
+quiver(real(R_Green_2), imag(R_Green_2), real(V_Yellow_Rel_2)*Scale, imag(V_Yellow_Rel_2)*Scale, 0, 'Color', 'y', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
 quiver(real(R_Grey_2)+RO4O2x, imag(R_Grey_2)+RO4O2y, real(V_Grey_2)*Scale, imag(V_Grey_2)*Scale, 0, 'k', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
 quiver(real(R_Cyan_2)+RO4O2x, imag(R_Cyan_2)+RO4O2y, real(V_Cyan_2)*Scale, imag(V_Cyan_2)*Scale, 0, 'c', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
 quiver(real(R_Cyan_Up_2)+RO4O2x, imag(R_Cyan_Up_2)+RO4O2y, real(V_Cyan_Up_2)*Scale, imag(V_Cyan_Up_2)*Scale, 0, 'c', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
