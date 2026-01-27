@@ -92,6 +92,9 @@ disp('CASE 2 (CROSSED):');
 disp(['  Green:  ', num2str(rad2deg(q2_L1_cross)+offset_deg)]);
 disp(['  Grey:   ', num2str(rad2deg(q4_L1_cross)+offset_deg)]);
 disp(['  Cyan:   ', num2str(rad2deg(q2_Cyan_2)+offset_deg)]);
+disp(['  Red:    ', num2str(rad2deg(q3_Red_2)+offset_deg)]);
+disp(['  Blue:   ', num2str(rad2deg(q3_Blue_2)+offset_deg)]);
+disp(['  Brown:  ', num2str(rad2deg(q4_Brown_2)+offset_deg)]);
 disp(' ');
 
 % ==========================================
@@ -113,7 +116,7 @@ a=L2_Loop2; b=L3_Loop2; c=L4_Shared;
 % Case 1
 w_Cyan_1 = (c * w_Grey_1 * sin(q4_L1_open - q3_Red_1)) / (a * sin(q2_Cyan_1 - q3_Red_1));
 w_Red_1 = (c * w_Grey_1 * sin(q4_L1_open - q2_Cyan_1)) / (b * sin(q3_Red_1 - q2_Cyan_1));
-% Case 2
+% Case 2 (ADDED HERE)
 w_Cyan_2 = (c * w_Grey_2 * sin(q4_L1_cross - q3_Red_2)) / (a * sin(q2_Cyan_2 - q3_Red_2));
 w_Red_2 = (c * w_Grey_2 * sin(q4_L1_cross - q2_Cyan_2)) / (b * sin(q3_Red_2 - q2_Cyan_2));
 
@@ -122,7 +125,7 @@ a=L2_Loop3; b=L3_Loop3; c=L4_Loop3;
 % Case 1
 w_Brown_1 = (a * w_Cyan_1 * sin(q_in_3_1 - q3_Blue_1)) / (c * sin(q4_Brown_1 - q3_Blue_1));
 w_Blue_1 = (a * w_Cyan_1 * sin(q4_Brown_1 - q_in_3_1)) / (b * sin(q4_Brown_1 - q3_Blue_1));
-% Case 2
+% Case 2 (ADDED HERE)
 w_Brown_2 = (a * w_Cyan_2 * sin(q_in_3_2 - q3_Blue_2)) / (c * sin(q4_Brown_2 - q3_Blue_2));
 w_Blue_2 = (a * w_Cyan_2 * sin(q4_Brown_2 - q_in_3_2)) / (b * sin(q4_Brown_2 - q3_Blue_2));
 
@@ -142,7 +145,9 @@ disp('CASE 2 (CROSSED):');
 disp(['  w_Green: ', num2str(w_Green_2)]);
 disp(['  w_Grey:  ', num2str(w_Grey_2)]);
 disp(['  w_Cyan:  ', num2str(w_Cyan_2)]);
-disp(' ');
+disp(['  w_Red:   ', num2str(w_Red_2)]);
+disp(['  w_Blue:  ', num2str(w_Blue_2)]);
+disp(['  w_Brown: ', num2str(w_Brown_2)]);
 
 % ==========================================
 % SECTION 4: VECTORS & PLOTTING
@@ -155,7 +160,7 @@ RO4O2x = real(RO4O2); RO4O2y = imag(RO4O2);
 figure(1)
 hold on; title('Case 1: Open Circuit (Position & Velocity)');
 
-% 1. Create Position Vectors (Complex Form)
+% 1. Create Vectors
 R_Green = L2_Loop1*exp(1i*(q2_L1_open+offset));
 R_Yellow = L3_Loop1*exp(1i*(q3+offset));
 R_Grey = L4_Shared*exp(1i*(q4_L1_open+offset));
@@ -165,23 +170,18 @@ R_Cyan_Up = L2_Loop3*exp(1i*(q_in_3_1+offset));
 R_Blue = L3_Loop3*exp(1i*(q3_Blue_1+offset));
 R_Brown = L4_Loop3*exp(1i*(q4_Brown_1+offset));
 
-% 2. Plot Mechanism (Position) - วาดโครงสร้างลิ้งค์
-% Loop 1
-plot([0 real(R_Green)], [0 imag(R_Green)], 'g-', 'LineWidth', 2); % Green
-plot([real(R_Green) real(R_Grey)+RO4O2x], [imag(R_Green) imag(R_Grey)+RO4O2y], 'y-', 'LineWidth', 2); % Yellow
-plot([RO4O2x real(R_Grey)+RO4O2x], [RO4O2y imag(R_Grey)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2); % Grey
-plot([0 RO4O2x], [0 RO4O2y], 'm-', 'LineWidth', 2); % Ground
+% 2. Plot Position
+plot([0 real(R_Green)], [0 imag(R_Green)], 'g-', 'LineWidth', 2);
+plot([real(R_Green) real(R_Grey)+RO4O2x], [imag(R_Green) imag(R_Grey)+RO4O2y], 'y-', 'LineWidth', 2);
+plot([RO4O2x real(R_Grey)+RO4O2x], [RO4O2y imag(R_Grey)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
+plot([0 RO4O2x], [0 RO4O2y], 'm-', 'LineWidth', 2);
+plot([RO4O2x real(R_Cyan)+RO4O2x], [RO4O2y imag(R_Cyan)+RO4O2y], 'c-', 'LineWidth', 2);
+plot([real(R_Cyan)+RO4O2x real(R_Grey)+RO4O2x], [imag(R_Cyan)+RO4O2y imag(R_Grey)+RO4O2y], 'r-', 'LineWidth', 2);
+plot([RO4O2x real(R_Cyan_Up)+RO4O2x], [RO4O2y imag(R_Cyan_Up)+RO4O2y], 'c:', 'LineWidth', 2);
+plot([real(R_Cyan_Up)+RO4O2x real(R_Brown)+RO4O2x], [imag(R_Cyan_Up)+RO4O2y imag(R_Brown)+RO4O2y], 'b-', 'LineWidth', 2);
+plot([RO4O2x real(R_Brown)+RO4O2x], [RO4O2y imag(R_Brown)+RO4O2y], 'Color', [0.6 0.3 0], 'LineWidth', 2);
 
-% Loop 2
-plot([RO4O2x real(R_Cyan)+RO4O2x], [RO4O2y imag(R_Cyan)+RO4O2y], 'c-', 'LineWidth', 2); % Cyan Down
-plot([real(R_Cyan)+RO4O2x real(R_Grey)+RO4O2x], [imag(R_Cyan)+RO4O2y imag(R_Grey)+RO4O2y], 'r-', 'LineWidth', 2); % Red
-
-% Loop 3
-plot([RO4O2x real(R_Cyan_Up)+RO4O2x], [RO4O2y imag(R_Cyan_Up)+RO4O2y], 'c-', 'LineWidth', 2); % Cyan Up
-plot([real(R_Cyan_Up)+RO4O2x real(R_Brown)+RO4O2x], [imag(R_Cyan_Up)+RO4O2y imag(R_Brown)+RO4O2y], 'b-', 'LineWidth', 2); % Blue
-plot([RO4O2x real(R_Brown)+RO4O2x], [RO4O2y imag(R_Brown)+RO4O2y], 'Color', [0.6 0.3 0], 'LineWidth', 2); % Brown
-
-% 3. Calculate Velocities (V = 1i * R * w)
+% 3. Calculate Velocities
 V_Green = 1i * R_Green * w_Green_1;
 V_Yellow_Rel = 1i * R_Yellow * w_Yellow;
 V_Grey = 1i * R_Grey * w_Grey_1;
@@ -189,18 +189,12 @@ V_Cyan = 1i * R_Cyan * w_Cyan_1;
 V_Cyan_Up = 1i * R_Cyan_Up * w_Cyan_1;
 V_Brown = 1i * R_Brown * w_Brown_1;
 
-% 4. Plot Velocities (Quiver starts at Link Tip)
-% Green (Start at Green Tip)
+% 4. Plot Velocities
 quiver(real(R_Green), imag(R_Green), real(V_Green)*Scale, imag(V_Green)*Scale, 0, 'Color', 'g', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
-% Yellow Rel (Start at Green Tip)
 quiver(real(R_Green), imag(R_Green), real(V_Yellow_Rel)*Scale, imag(V_Yellow_Rel)*Scale, 0, 'Color', 'y', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
-% Grey (Start at Grey Tip)
 quiver(real(R_Grey)+RO4O2x, imag(R_Grey)+RO4O2y, real(V_Grey)*Scale, imag(V_Grey)*Scale, 0, 'k', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
-% Cyan Down (Start at Cyan Tip)
 quiver(real(R_Cyan)+RO4O2x, imag(R_Cyan)+RO4O2y, real(V_Cyan)*Scale, imag(V_Cyan)*Scale, 0, 'c', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
-% Cyan Up (Start at Cyan Up Tip)
 quiver(real(R_Cyan_Up)+RO4O2x, imag(R_Cyan_Up)+RO4O2y, real(V_Cyan_Up)*Scale, imag(V_Cyan_Up)*Scale, 0, 'c', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
-% Brown (Start at Brown Tip)
 quiver(real(R_Brown)+RO4O2x, imag(R_Brown)+RO4O2y, real(V_Brown)*Scale, imag(V_Brown)*Scale, 0, 'Color', [0.6 0.3 0], 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
 
 axis equal; grid on;
@@ -209,7 +203,7 @@ axis equal; grid on;
 figure(2)
 hold on; title('Case 2: Crossed Circuit (Position & Velocity)');
 
-% 1. Position Vectors
+% 1. Create Vectors
 R_Green_2 = L2_Loop1*exp(1i*(q2_L1_cross+offset));
 R_Yellow_2 = L3_Loop1*exp(1i*(q3+offset));
 R_Grey_2 = L4_Shared*exp(1i*(q4_L1_cross+offset));
@@ -219,14 +213,14 @@ R_Cyan_Up_2 = L2_Loop3*exp(1i*(q_in_3_2+offset));
 R_Blue_2 = L3_Loop3*exp(1i*(q3_Blue_2+offset));
 R_Brown_2 = L4_Loop3*exp(1i*(q4_Brown_2+offset));
 
-% 2. Plot Mechanism
+% 2. Plot Position
 plot([0 RO4O2x], [0 RO4O2y], 'm-', 'LineWidth', 2);
 plot([0 real(R_Green_2)], [0 imag(R_Green_2)], 'g-', 'LineWidth', 2);
 plot([real(R_Green_2) real(R_Grey_2)+RO4O2x], [imag(R_Green_2) imag(R_Grey_2)+RO4O2y], 'y-', 'LineWidth', 2);
 plot([RO4O2x real(R_Grey_2)+RO4O2x], [RO4O2y imag(R_Grey_2)+RO4O2y], 'Color', [0.5 0.5 0.5], 'LineWidth', 2);
 plot([RO4O2x real(R_Cyan_2)+RO4O2x], [RO4O2y imag(R_Cyan_2)+RO4O2y], 'c-', 'LineWidth', 2);
 plot([real(R_Cyan_2)+RO4O2x real(R_Grey_2)+RO4O2x], [imag(R_Cyan_2)+RO4O2y imag(R_Grey_2)+RO4O2y], 'r-', 'LineWidth', 2);
-plot([RO4O2x real(R_Cyan_Up_2)+RO4O2x], [RO4O2y imag(R_Cyan_Up_2)+RO4O2y], 'c-', 'LineWidth', 2);
+plot([RO4O2x real(R_Cyan_Up_2)+RO4O2x], [RO4O2y imag(R_Cyan_Up_2)+RO4O2y], 'c:', 'LineWidth', 2);
 plot([real(R_Cyan_Up_2)+RO4O2x real(R_Brown_2)+RO4O2x], [imag(R_Cyan_Up_2)+RO4O2y imag(R_Brown_2)+RO4O2y], 'b-', 'LineWidth', 2);
 plot([RO4O2x real(R_Brown_2)+RO4O2x], [RO4O2y imag(R_Brown_2)+RO4O2y], 'Color', [0.6 0.3 0], 'LineWidth', 2);
 
@@ -238,7 +232,7 @@ V_Cyan_2 = 1i * R_Cyan_2 * w_Cyan_2;
 V_Cyan_Up_2 = 1i * R_Cyan_Up_2 * w_Cyan_2;
 V_Brown_2 = 1i * R_Brown_2 * w_Brown_2;
 
-% 4. Plot Velocities (At Link Tips)
+% 4. Plot Velocities
 quiver(real(R_Green_2), imag(R_Green_2), real(V_Green_2)*Scale, imag(V_Green_2)*Scale, 0, 'g', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
 quiver(real(R_Green_2), imag(R_Green_2), real(V_Yellow_Rel_2)*Scale, imag(V_Yellow_Rel_2)*Scale, 0, 'y', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
 quiver(real(R_Grey_2)+RO4O2x, imag(R_Grey_2)+RO4O2y, real(V_Grey_2)*Scale, imag(V_Grey_2)*Scale, 0, 'k', 'LineWidth', 1.5, 'MaxHeadSize', 0.5);
