@@ -1,120 +1,96 @@
 function y = fcn(u1,u2,u3,u4,u5,u6,u7)
-% Inputs mapping:
-% u1: alpha_Yellow (Input Angular Acceleration)
-% u2: w_Green (Link 2)
-% u3: w_Yellow (Link 3 - Input)
-% u4: w_Grey (Link 4)
-% u5: q_Green (Link 2) - rad
-% u6: q_Yellow (Link 3) - rad
-% u7: q_Grey (Link 4) - rad
+% Inputs mapping สำหรับกลไกของคุณ (Loop 1):
+% u1: alpha_Yellow (Input Angular Acceleration = 0.003)
+% u2: w_Green (ความเร็วเชิงมุมลิ้งค์ 2)
+% u3: w_Yellow (ความเร็วเชิงมุมลิ้งค์ 3 - Input = 0.03)
+% u4: w_Grey (ความเร็วเชิงมุมลิ้งค์ 4)
+% u5: q_Green (มุมลิ้งค์ 2) ในหน่วย rad
+% u6: q_Yellow (มุมลิ้งค์ 3) ในหน่วย rad
+% u7: q_Grey (มุมลิ้งค์ 4) ในหน่วย rad
 
 % ==========================================
-% PARAMETERS
+% 1. PARAMETERS (Loop 1: Green-Yellow-Grey) [cite: 265, 558-559, 741-742]
 % ==========================================
-L1 = 0.210; % Ground
-L2 = 0.180; % Green
-L3 = 0.180; % Yellow
-L4 = 0.118; % Grey
+L1 = 0.210; % Ground (d)
+L2 = 0.180; % Green (a)
+L3 = 0.180; % Yellow (b)
+L4 = 0.118; % Grey (c)
+offset = 0.014137; % 0.81 degree in radian
 
-a = L2;
-b = L3;
-c = L4;
-d = L1;
+a = L2; b = L3; c = L4; d = L1;
 
-% ==========================================
-% ASSIGN INPUTS
-% ==========================================
-alpha_Yellow = u1; % Known Input
-
-w_Green      = u2;
-w_Yellow     = u3;
-w_Grey       = u4;
-
-q_Green      = u5;
-q_Yellow     = u6;
-q_Grey       = u7;
+% กำหนดค่าอินพุตตาม u1-u7
+alpha_Yellow = u1; 
+w2 = u2; w3 = u3; w4 = u4;
+q2 = u5; q3 = u6; q4 = u7;
 
 % ==========================================
-% POSITION VECTORS (R = L*exp(j*theta))
+% 2. POSITION VECTORS [cite: 568-574, 608-614, 820-826]
 % ==========================================
-% RA -> Green Link (Link 2)
-RA = a*exp(1i*q_Green);
-RAx = real(RA);
-RAy = imag(RA);
+RA = a*exp(1i*q2);
+RAx = real(RA); RAy = imag(RA);
 
-% RBA -> Yellow Link (Link 3)
-RBA = b*exp(1i*q_Yellow);
-RBAx = real(RBA);
-RBAy = imag(RBA);
+RBA = b*exp(1i*q3);
+RBAx = real(RBA); RBAy = imag(RBA);
 
-% RB -> Grey Link (Link 4)
-RB = c*exp(1i*q_Grey);
-RBx = real(RB);
-RBy = imag(RB);
+RB = RA + RBA;
+RBx = real(RB); RBy = imag(RB);
 
 % ==========================================
-% VELOCITY VECTORS (V = j*w*R)
+% 3. VELOCITY VECTORS [cite: 670-677, 688-695, 936-942]
 % ==========================================
-% VA -> Green Velocity
-VA = 1i*a*w_Green*exp(1i*q_Green);
-VAx = real(VA);
-VAy = imag(VA);
+VA = 1i*a*w2*exp(1i*q2);
+VAx = real(VA); VAy = imag(VA);
 
-% VBA -> Yellow Velocity
-VBA = 1i*b*w_Yellow*exp(1i*q_Yellow);
-VBAx = real(VBA);
-VBAy = imag(VBA);
+VBA = 1i*b*w3*exp(1i*q3);
+VBAx = real(VBA); VBAy = imag(VBA);
 
-% VB -> Grey Velocity
-VB = 1i*c*w_Grey*exp(1i*q_Grey);
-VBx = real(VB);
-VBy = imag(VB);
+VB = VA + VBA;
+VBx = real(VB); VBy = imag(VB);
 
 % ==========================================
-% ACCELERATION ANALYSIS (Analytical Method)
+% 4. ACCELERATION ANALYSIS (Analytical Method) [cite: 171-175, 231-233, 335-345]
 % ==========================================
-% Solving for alpha_Green and alpha_Grey
-% Loop Equation: Green + Yellow - Grey = 0
-% A*alpha_Green + B*alpha_Grey = C
-% D*alpha_Green + E*alpha_Grey = F
+% ตัวแปรตามสไลด์ (A, B, D, E) [cite: 172, 336, 340]
+A_acc = c*sin(q4); 
+B_acc = b*sin(q3); 
+D_acc = c*cos(q4); 
+E_acc = b*cos(q3);
 
-A_coef = -a*sin(q_Green); 
-B_coef = c*sin(q_Grey); 
-D_coef = a*cos(q_Green); 
-E_coef = -c*cos(q_Grey);
+% พจน์คงที่ RHS (C, F) [cite: 175, 222-223, 337-343]
+% โดยที่ alpha_input (u1) อยู่ที่ลิ้งค์เหลือง (ลิ้งค์ 3)
+C_val = a*alpha_input_not_used*0 + a*w2^2*cos(q2) + b*w3^2*cos(q3) + b*alpha_Yellow*sin(q3) - c*w4^2*cos(q4);
+% หมายเหตุ: ในโจทย์นี้ alpha_Green (ลิ้งค์ 2) เป็น Unknown จึงย้ายไปฝั่งแก้สมการ
+% เราต้องจัดรูปสมการใหม่ตามพจน์ u1 (alpha3) ที่เรารู้ค่า
 
-% RHS Terms (C and F contain knowns: w^2 and alpha_Yellow)
-C_val = a*w_Green^2*cos(q_Green) + b*w_Yellow^2*cos(q_Yellow) + b*alpha_Yellow*sin(q_Yellow) - c*w_Grey^2*cos(q_Grey);
-F_val = a*w_Green^2*sin(q_Green) + b*w_Yellow^2*sin(q_Yellow) - b*alpha_Yellow*cos(q_Yellow) - c*w_Grey^2*sin(q_Grey);
+% ปรับสูตรแก้หา alpha2 (Green) และ alpha4 (Grey) ตามหลักการกำจัดตัวแปรในสไลด์ [cite: 154-159, 205-208]
+A_mod = -a*sin(q2); B_mod = c*sin(q4);
+D_mod = a*cos(q2);  E_mod = -c*cos(q4);
 
-% Solve Unknowns (Cramer's Rule format)
-alpha_Green = (C_val*E_coef - B_coef*F_val) / (A_coef*E_coef - B_coef*D_coef);
-alpha_Grey  = (A_coef*F_val - C_val*D_coef) / (A_coef*E_coef - B_coef*D_coef);
+C_mod = a*w2^2*cos(q2) + b*w3^2*cos(q3) + b*alpha_Yellow*sin(q3) - c*w4^2*cos(q4);
+F_mod = a*w2^2*sin(q2) + b*w3^2*sin(q3) - b*alpha_Yellow*cos(q3) - c*w4^2*sin(q4);
 
-% ==========================================
-% ACCELERATION VECTORS (A = j*alpha*R - w^2*R)
-% ==========================================
-% AA -> Acceleration of Green
-AA = (1i*alpha_Green*a - a*w_Green^2)*exp(1i*q_Green);
-AAx = real(AA); 
-AAy = imag(AA);
-
-% ABA -> Acceleration of Yellow
-ABA = (1i*alpha_Yellow*b - b*w_Yellow^2)*exp(1i*q_Yellow);
-ABAx = real(ABA); 
-ABAy = imag(ABA);
-
-% AB -> Acceleration of Grey
-AB = (1i*alpha_Grey*c - c*w_Grey^2)*exp(1i*q_Grey);
-ABx = real(AB); 
-ABy = imag(AB);
+alpha2 = (C_mod*E_mod - B_mod*F_mod) / (A_mod*E_mod - B_mod*D_mod);
+alpha4 = (A_mod*F_mod - C_mod*D_mod) / (A_mod*E_mod - B_mod*D_mod);
 
 % ==========================================
-% OUTPUT MAPPING
+% 5. ACCELERATION VECTORS [cite: 247-257, 355-367]
+% ==========================================
+AA = (1i*alpha2*a - a*w2^2)*exp(1i*q2);
+AAx = real(AA); AAy = imag(AA);
+
+ABA = (1i*alpha_Yellow*b - b*w3^2)*exp(1i*q3);
+ABAx = real(ABA); ABAy = imag(ABA);
+
+AB = AA + ABA;
+ABx = real(AB); ABy = imag(AB);
+
+% ==========================================
+% 6. OUTPUT MAPPING (Exact Format: 20 Channels)
 % ==========================================
 xout = zeros(20,1);
-xout(1) = alpha_Green; % Unknown 1
-xout(2) = alpha_Grey;  % Unknown 2
+xout(1) = alpha2; % alpha ของ Green
+xout(2) = alpha4; % alpha ของ Grey
 xout(3) = RAx; 
 xout(4) = RAy; 
 xout(5) = RBAx; 
